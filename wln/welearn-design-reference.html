@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WeLearn — Design system reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   WeLearn Design System — Web tokens & base styles
+   Source: WeLearn Brand Guidelines 2025 (PDF)
+   Font: Plus Jakarta Sans (Google Fonts)
+
+   Load the font in your <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+   Values marked [derived] are not in the brand guide. They were added
+   to make the brand work on the web (accessibility, interaction states).
+   ===================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Color: primary palette ---------- */
+  --wl-orange:        #EF5617;  /* PMS 172 C — logo, emphasis, icons */
+  --wl-amber:         #F99930;  /* PMS 151 C */
+  --wl-yellow:        #FFC914;  /* PMS 123 C */
+  --wl-beige:         #F2F1DF;
+  --wl-beige-light:   #F9F8F2;
+
+  /* ---------- Color: secondary — accents ---------- */
+  /* Never as backgrounds or text. Sparing accents in shape collections only. */
+  --wl-red:           #EF4156;
+  --wl-teal:          #00AFAD;
+  --wl-blue:          #006B91;
+
+  /* ---------- Color: secondary — buttons & text links ---------- */
+  --wl-purple:        #8754EF;
+  --wl-purple-deep:   #7A41ED;  /* [derived] hover/pressed; links on beige (AA 4.84:1) */
+
+  /* ---------- Color: secondary — tints (light backgrounds) ---------- */
+  --wl-yellow-light:  #FFEEBC;
+  --wl-pink:          #FFE6EB;
+  --wl-blue-light:    #CFF9F9;
+
+  /* ---------- Color: secondary — darks (dark backgrounds) ---------- */
+  --wl-maroon:        #661D29;
+  --wl-green-dark:    #084337;
+  --wl-blue-dark:     #00374C;
+
+  /* ---------- Color: neutrals ---------- */
+  --wl-black:         #000000;
+  --wl-charcoal:      #3A3F3E;
+  --wl-gray-dark:     #798180;  /* 3.99:1 on white — large text, borders, icons only */
+  --wl-gray-medium:   #B2B7B6;
+  --wl-gray-light:    #CDD0CF;
+  --wl-gray-lightest: #F1F1EE;
+  --wl-white:         #FFFFFF;
+
+  /* ---------- Semantic color roles ---------- */
+  --wl-text:            var(--wl-black);     /* all headline + body copy */
+  --wl-text-secondary:  var(--wl-charcoal);  /* captions, meta, notes */
+  --wl-text-inverse:    var(--wl-white);     /* on maroon / dark green / dark blue */
+  --wl-emphasis:        var(--wl-orange);    /* headline emphasis on beige — large text only */
+  --wl-surface:         var(--wl-white);
+  --wl-surface-warm:    var(--wl-beige-light);
+  --wl-surface-sand:    var(--wl-beige);
+  --wl-border:          var(--wl-gray-light);
+  --wl-border-strong:   var(--wl-gray-medium);
+  --wl-action:          var(--wl-purple);
+  --wl-action-hover:    var(--wl-purple-deep);
+  --wl-focus-ring:      var(--wl-purple-deep);
+
+  /* ---------- Photo overlays ---------- */
+  --wl-overlay-opacity: 0.75;  /* ~75% per guide; one overlay photo per composition */
+  --wl-pattern-opacity: 0.28;  /* 25–30% per guide */
+
+  /* ---------- Typography ---------- */
+  --wl-font: "Plus Jakarta Sans", "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+
+  --wl-weight-regular:   400;
+  --wl-weight-medium:    500;
+  --wl-weight-semibold:  600;
+  --wl-weight-bold:      700;
+  --wl-weight-extrabold: 800;
+
+  /* Sizes: desktop values come straight from the guide's type specimen;
+     clamp() scales the large styles down on small screens [derived]. */
+  --wl-size-headline: clamp(2.75rem, 1.6rem + 4.6vw, 4.5rem);    /* 44 → 72px */
+  --wl-size-subhead:  clamp(1.625rem, 1.3rem + 1.3vw, 2.125rem); /* 26 → 34px */
+  --wl-size-callout:  clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem); /* 19 → 21px */
+  --wl-size-body:     1rem;      /* 16px */
+  --wl-size-h3:       1rem;      /* 16px */
+  --wl-size-small:    0.875rem;  /* 14px — body in multi-column / cards */
+  --wl-size-eyebrow:  0.75rem;   /* 12px */
+  --wl-size-button:   0.75rem;   /* 12px */
+
+  --wl-leading-headline: 1.06;
+  --wl-leading-subhead:  1.18;
+  --wl-leading-callout:  1.5;
+  --wl-leading-body:     1.625;
+  --wl-leading-small:    1.64;
+
+  --wl-tracking-headline: -0.015em;
+  --wl-tracking-caps:      0.06em;
+
+  --wl-measure: 68ch;  /* max line length for body copy [derived] */
+
+  /* ---------- Spacing (4px base) [derived] ---------- */
+  --wl-space-1:  4px;
+  --wl-space-2:  8px;
+  --wl-space-3:  12px;
+  --wl-space-4:  16px;
+  --wl-space-5:  24px;
+  --wl-space-6:  32px;
+  --wl-space-7:  48px;
+  --wl-space-8:  64px;
+  --wl-space-9:  96px;
+  --wl-space-10: 128px;
+
+  /* ---------- Brand shapes ---------- */
+  /* Measured from the guide: ~98pt module, ~20pt gap, ~15pt radius.
+     One radius for every shape, photo and card in a composition. */
+  --wl-shape-module: 96px;
+  --wl-shape-gap:    20px;
+  --wl-radius:       16px;
+  --wl-radius-pill:  999px;
+
+  /* ---------- Iconography ---------- */
+  --wl-icon-sm: 24px;
+  --wl-icon-md: 48px;
+  --wl-icon-lg: 64px;
+
+  /* ---------- Logo ---------- */
+  --wl-logo-min-width: 100px;  /* digital minimum */
+}
+
+/* =====================================================================
+   Base
+   ===================================================================== */
+
+.wl, .wl *, .wl *::before, .wl *::after { box-sizing: border-box; }
+
+.wl {
+  font-family: var(--wl-font);
+  font-size: var(--wl-size-body);
+  line-height: var(--wl-leading-body);
+  color: var(--wl-text);
+  background: var(--wl-surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =====================================================================
+   Type styles — names match the brand guide hierarchy
+   ===================================================================== */
+
+.wl-eyebrow {
+  font-size: var(--wl-size-eyebrow);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.4;
+  letter-spacing: var(--wl-tracking-caps);
+  text-transform: uppercase;
+}
+
+.wl-headline {
+  font-size: var(--wl-size-headline);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-headline);
+  letter-spacing: var(--wl-tracking-headline);
+  text-wrap: balance;
+}
+
+.wl-subhead {
+  font-size: var(--wl-size-subhead);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-subhead);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.wl-h3 {
+  font-size: var(--wl-size-h3);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.4;
+}
+
+.wl-body {
+  font-size: var(--wl-size-body);
+  font-weight: var(--wl-weight-regular);
+  line-height: var(--wl-leading-body);
+  max-width: var(--wl-measure);
+}
+
+.wl-body-sm {
+  font-size: var(--wl-size-small);
+  font-weight: var(--wl-weight-regular);
+  line-height: var(--wl-leading-small);
+}
+
+.wl-callout {
+  font-size: var(--wl-size-callout);
+  font-weight: var(--wl-weight-medium);
+  line-height: var(--wl-leading-callout);
+  max-width: 52ch;
+}
+
+/* Bold lead-in / summary line (seen in guide's scale examples) */
+.wl-lead {
+  font-size: var(--wl-size-body);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.75;
+  max-width: var(--wl-measure);
+}
+
+/* =====================================================================
+   Heading levels — semantic elements mapped to the brand hierarchy
+   h1 = Headline · h2 = Subhead · h3 = H3 heading or label
+   :where() keeps specificity at zero-class level, so any .wl-* class
+   on a heading still wins. Use .wl-h1/.wl-h2 to get the look on a
+   different element (e.g. a visually large h2 on a cover section).
+   ===================================================================== */
+
+:where(.wl) h1, .wl-h1 {
+  font-size: var(--wl-size-headline);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-headline);
+  letter-spacing: var(--wl-tracking-headline);
+  text-wrap: balance;
+}
+
+:where(.wl) h2, .wl-h2 {
+  font-size: var(--wl-size-subhead);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-subhead);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+:where(.wl) h3 {
+  font-size: var(--wl-size-h3);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.4;
+}
+
+/* Margins live in zero-specificity rules so the flow rules below
+   always apply and any layout class can override them. */
+:where(.wl) :where(h1, h2, h3, h4, p, .wl-eyebrow, .wl-headline, .wl-subhead,
+  .wl-h1, .wl-h2, .wl-h3, .wl-body, .wl-body-sm, .wl-callout, .wl-lead) { margin: 0; }
+
+/* Space after each heading level in running content */
+:where(.wl) :where(h1, .wl-h1) + * { margin-top: var(--wl-space-5); }  /* 24px */
+:where(.wl) :where(h2, .wl-h2) + * { margin-top: var(--wl-space-4); }  /* 16px */
+:where(.wl) :where(h3, .wl-h3) + * { margin-top: var(--wl-space-1); }  /* 4px  */
+
+/* Space before a heading that follows content */
+:where(.wl) :where(p, ul, ol, figure, table, blockquote) + :where(h2, .wl-h2) { margin-top: var(--wl-space-7); } /* 48px */
+:where(.wl) :where(p, ul, ol, figure, table, blockquote) + :where(h3, .wl-h3) { margin-top: var(--wl-space-6); } /* 32px */
+:where(.wl) p + p { margin-top: var(--wl-space-4); }
+
+/* An eyebrow sits tight above its heading */
+:where(.wl) .wl-eyebrow + :where(h1, h2, .wl-h1, .wl-h2, .wl-headline, .wl-subhead) { margin-top: var(--wl-space-3); }
+
+/* Emphasized words in a headline. Large text only (orange on beige = 3.06:1). */
+.wl-em { color: var(--wl-emphasis); font-style: normal; }
+
+/* =====================================================================
+   Surfaces — each sets the correct text + emphasis + icon color
+   ===================================================================== */
+
+.wl-surface-white        { background: var(--wl-white);          --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-beige-light  { background: var(--wl-beige-light);    --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-beige        { background: var(--wl-beige);          --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-gray         { background: var(--wl-gray-lightest);  --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-yellow-light { background: var(--wl-yellow-light);   --wl-on: var(--wl-black); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-pink         { background: var(--wl-pink);           --wl-on: var(--wl-black); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-blue-light   { background: var(--wl-blue-light);     --wl-on: var(--wl-black); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+
+.wl-surface-orange       { background: var(--wl-orange);         --wl-on: var(--wl-black); --wl-em-color: var(--wl-white); --wl-icon-color: var(--wl-black); color: var(--wl-on); }
+.wl-surface-amber        { background: var(--wl-amber);          --wl-on: var(--wl-black); --wl-icon-color: var(--wl-black); color: var(--wl-on); }
+.wl-surface-yellow       { background: var(--wl-yellow);         --wl-on: var(--wl-black); --wl-icon-color: var(--wl-black); color: var(--wl-on); }
+
+.wl-surface-maroon       { background: var(--wl-maroon);         --wl-on: var(--wl-white); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-green-dark   { background: var(--wl-green-dark);     --wl-on: var(--wl-white); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-blue-dark    { background: var(--wl-blue-dark);      --wl-on: var(--wl-white); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+
+[class*="wl-surface-"] .wl-em { color: var(--wl-em-color, var(--wl-on)); }
+
+/* =====================================================================
+   Buttons & links
+   ===================================================================== */
+
+.wl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wl-space-2);
+  min-height: 44px;
+  padding: var(--wl-space-3) var(--wl-space-5);
+  border: 1.5px solid transparent;
+  border-radius: var(--wl-radius-pill);
+  font-family: var(--wl-font);
+  font-size: var(--wl-size-button);
+  font-weight: var(--wl-weight-extrabold);
+  letter-spacing: var(--wl-tracking-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.wl-btn--primary   { background: var(--wl-action); color: var(--wl-white); }
+.wl-btn--primary:hover { background: var(--wl-action-hover); }
+
+.wl-btn--secondary { background: transparent; color: var(--wl-action-hover); border-color: var(--wl-action); }
+.wl-btn--secondary:hover { background: var(--wl-action); color: var(--wl-white); }
+
+/* On orange backgrounds the guide calls for white buttons */
+.wl-btn--on-orange { background: var(--wl-white); color: var(--wl-black); }
+.wl-btn--on-orange:hover { background: var(--wl-beige-light); }
+
+/* Standalone text link (caps + arrow), e.g. "Read the report" */
+.wl-link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wl-space-2);
+  font-size: var(--wl-size-button);
+  font-weight: var(--wl-weight-extrabold);
+  letter-spacing: var(--wl-tracking-caps);
+  text-transform: uppercase;
+  color: var(--wl-action-hover);
+  text-decoration: none;
+}
+.wl-link-cta::after { content: "\2192"; font-weight: var(--wl-weight-regular); font-size: 1.25em; transition: transform .15s ease; }
+.wl-link-cta:hover::after { transform: translateX(3px); }
+
+/* Inline link inside body copy */
+.wl-link {
+  color: var(--wl-action-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.wl-link:hover { text-decoration-thickness: 2px; }
+
+.wl-btn:focus-visible,
+.wl-link:focus-visible,
+.wl-link-cta:focus-visible {
+  outline: 2px solid var(--wl-focus-ring);
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   Brand shapes, cards, photos
+   ===================================================================== */
+
+.wl-shape {
+  border-radius: var(--wl-radius);
+  background: var(--wl-shape-color, var(--wl-orange));
+  overflow: hidden;
+}
+
+/* A collection of shapes on an even grid */
+.wl-shape-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--wl-cols, 4), var(--wl-shape-module));
+  grid-auto-rows: var(--wl-shape-module);
+  gap: var(--wl-shape-gap);
+}
+
+.wl-card {
+  border-radius: var(--wl-radius);
+  padding: var(--wl-space-5);
+}
+
+.wl-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--wl-radius);
+  object-fit: cover;
+}
+
+/* Color overlay on a photo: wrap the <img> */
+.wl-photo-overlay { position: relative; border-radius: var(--wl-radius); overflow: hidden; }
+.wl-photo-overlay::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--wl-overlay-color, var(--wl-orange));
+  opacity: var(--wl-overlay-opacity);
+  pointer-events: none;
+}
+
+/* =====================================================================
+   Pattern (background texture) — simple rounded-square grid
+   ===================================================================== */
+
+.wl-pattern { position: relative; isolation: isolate; }
+.wl-pattern::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  opacity: var(--wl-pattern-opacity);
+  background-color: var(--wl-pattern-color, var(--wl-yellow));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect x='0' y='0' width='22' height='22' rx='4' fill='black'/%3E%3C/svg%3E") repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect x='0' y='0' width='22' height='22' rx='4' fill='black'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+/* =====================================================================
+   Icons (thin-line, rounded — flaticon.com style)
+   Use stroke="currentColor" in the SVG.
+   ===================================================================== */
+
+.wl-icon    { width: var(--wl-icon-md); height: var(--wl-icon-md); color: var(--wl-icon-color, var(--wl-orange)); flex: none; }
+.wl-icon-sm { width: var(--wl-icon-sm); height: var(--wl-icon-sm); }
+.wl-icon-lg { width: var(--wl-icon-lg); height: var(--wl-icon-lg); }
+
+/* =====================================================================
+   Logo
+   ===================================================================== */
+
+.wl-logo { display: block; min-width: var(--wl-logo-min-width); height: auto; }
+.wl-logo--mono .we,
+.wl-logo--mono .learn { fill: currentColor; } /* all-white / all-black version */
+
+@media (prefers-reduced-motion: reduce) {
+  .wl * { transition: none !important; }
+}
+
+
+/* ---------- Reference page layout (not part of the system) ---------- */
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+body { margin: 0; }
+.ref { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100vh; }
+.ref-nav {
+  position: sticky; top: 0; align-self: start; height: 100vh;
+  background: var(--wl-beige-light); border-right: 1px solid var(--wl-border);
+  padding: var(--wl-space-6) var(--wl-space-5); display: flex; flex-direction: column; gap: var(--wl-space-6);
+}
+.ref-nav .wl-logo { width: 132px; }
+.ref-nav ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.ref-nav a {
+  display: block; padding: 6px 10px; border-radius: 8px; color: var(--wl-text);
+  text-decoration: none; font-size: var(--wl-size-small); font-weight: var(--wl-weight-medium);
+}
+.ref-nav a:hover { background: var(--wl-beige); }
+.ref-nav a:focus-visible { outline: 2px solid var(--wl-focus-ring); outline-offset: 1px; }
+.ref-nav .meta { margin-top: auto; font-size: 12px; line-height: 1.5; color: var(--wl-text-secondary); }
+
+main { padding: var(--wl-space-8) clamp(20px, 5vw, 72px) var(--wl-space-10); max-width: 1160px; }
+.ref-intro { padding-bottom: var(--wl-space-8); border-bottom: 1px solid var(--wl-border); }
+.ref-intro .wl-headline { margin: var(--wl-space-3) 0 var(--wl-space-5); }
+
+section.ref-sec { padding: var(--wl-space-8) 0; border-bottom: 1px solid var(--wl-border); }
+.ref-sec > header { display: grid; gap: var(--wl-space-3); margin-bottom: var(--wl-space-6); max-width: 70ch; }
+.ref-sub { font-size: 13px; font-weight: var(--wl-weight-bold); margin: var(--wl-space-6) 0 var(--wl-space-3); }
+.ref-sec > header + .ref-sub { margin-top: 0; }
+
+.rules { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: var(--wl-size-small); line-height: 1.55; max-width: 72ch; }
+.rules li { padding-left: 24px; position: relative; }
+.rules li::before { position: absolute; left: 0; top: 0; font-weight: 800; }
+.rules .do::before { content: "\2713"; color: var(--wl-teal); }
+.rules .dont::before { content: "\2715"; color: var(--wl-red); }
+.rules .note::before { content: "!"; color: var(--wl-orange); left: 5px; }
+
+code, .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.86em; }
+code { background: var(--wl-gray-lightest); padding: 1px 5px; border-radius: 4px; }
+
+/* Swatches */
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--wl-space-3); }
+.swatch { border: 1px solid var(--wl-border); border-radius: var(--wl-radius); overflow: hidden; background: var(--wl-white); }
+.swatch .chip { height: 72px; display: flex; align-items: flex-end; padding: 10px 12px; font-size: 12px; font-weight: 700; }
+.swatch .info { padding: 10px 12px 12px; display: grid; gap: 2px; font-size: 12px; line-height: 1.45; }
+.swatch .name { font-size: 14px; font-weight: var(--wl-weight-semibold); }
+.swatch .use { color: var(--wl-text-secondary); margin-top: 4px; }
+.copy {
+  all: unset; cursor: pointer; justify-self: start; border-radius: 4px; padding: 0 3px; margin-left: -3px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12px;
+}
+.copy:hover { background: var(--wl-gray-lightest); }
+.copy:focus-visible { outline: 2px solid var(--wl-focus-ring); }
+.swatch .copy, .swatch .mono { font-size: 11px !important; }
+
+/* Pairing tiles */
+.pairs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--wl-space-4); }
+.pair { border-radius: var(--wl-radius); padding: var(--wl-space-4) var(--wl-space-4) var(--wl-space-3); display: grid; gap: 4px; min-height: 148px; }
+.pair.bordered { box-shadow: inset 0 0 0 1px var(--wl-border); }
+.pair .big { font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.pair .small { font-size: 14px; line-height: 1.5; }
+.pair .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
+.badge { padding: 3px 8px; border-radius: 99px; font-size: 11px; font-weight: 800; letter-spacing: .02em; background: var(--wl-white); color: var(--wl-black); white-space: nowrap; }
+.badge.pass { box-shadow: inset 0 0 0 1.5px #0a7a5a; color: #075c44; }
+.badge.large { box-shadow: inset 0 0 0 1.5px #a35a00; color: #7a4300; }
+.badge.fail { box-shadow: inset 0 0 0 1.5px #b3243a; color: #95182c; }
+
+/* Heading levels */
+.ref-sec > header > * { margin: 0; }
+.hlevels { display: grid; gap: 0; border: 1px solid var(--wl-border); border-radius: var(--wl-radius); overflow: hidden; }
+.hlevel { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--wl-space-5); padding: var(--wl-space-6) var(--wl-space-5); border-top: 1px solid var(--wl-border); background: var(--wl-white); }
+.hlevel:first-child { border-top: 0; }
+.htag { align-self: start; display: grid; gap: 6px; }
+.htag b { font: 800 28px/1 var(--wl-font); color: var(--wl-orange); letter-spacing: -0.01em; }
+.htag span { font-size: 12px; line-height: 1.4; color: var(--wl-text-secondary); }
+.hlevel .hdemo > :where(h1, h2, h3) + * { margin-top: 0; }
+.hdemo { display: grid; gap: var(--wl-space-3); }
+.hdemo .specline { font-size: 12px; color: var(--wl-text-secondary); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.flow { padding: clamp(24px, 4vw, 48px); border-radius: var(--wl-radius); max-width: 760px; }
+.flow .tag { display: inline-block; text-transform: none; font: 700 10px/1 ui-monospace, Menlo, monospace; color: var(--wl-orange); vertical-align: middle; margin-left: 8px; letter-spacing: 0; }
+@media (max-width: 860px) { .hlevel { grid-template-columns: 1fr; gap: var(--wl-space-3); } }
+
+/* Type spec */
+.type-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--wl-space-6); padding: var(--wl-space-6) 0; border-top: 1px solid var(--wl-border); }
+.type-row:first-of-type { border-top: 0; padding-top: 0; }
+.type-spec { font-size: 12px; line-height: 1.6; color: var(--wl-text-secondary); }
+.type-spec strong { display: block; color: var(--wl-text); font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.type-spec .copy { color: var(--wl-action-hover); }
+
+.composition { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--wl-radius); overflow: hidden; border: 1px solid var(--wl-border); }
+.composition > div { padding: clamp(24px, 4vw, 56px); display: grid; gap: var(--wl-space-5); align-content: start; }
+.composition .wl-logo { width: 120px; margin-bottom: var(--wl-space-4); }
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: var(--wl-space-5); }
+.checks > div { display: grid; grid-template-columns: 20px 1fr; gap: 4px 8px; }
+.checks svg { width: 18px; height: 18px; color: var(--wl-orange); margin-top: 2px; }
+.checks .wl-body-sm { grid-column: 2; }
+
+/* Logo */
+.logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--wl-space-4); }
+.logo-tile { border-radius: var(--wl-radius); display: grid; place-items: center; min-height: 160px; padding: var(--wl-space-6); position: relative; }
+.logo-tile .wl-logo { width: 100%; max-width: 220px; }
+.logo-tile .cap { position: absolute; left: 14px; bottom: 10px; font-size: 11px; font-weight: 600; }
+.clearspace { display: inline-block; padding: 23px; /* = letter height at 220px wide */ outline: 1px dashed var(--wl-orange); outline-offset: -1px; background:
+  repeating-linear-gradient(45deg, rgba(239,86,23,.08) 0 6px, transparent 6px 12px); }
+.clearspace .wl-logo { width: 220px; background: var(--wl-white); }
+
+/* Shapes */
+.shape-demo { display: flex; flex-wrap: wrap; gap: var(--wl-space-7); align-items: flex-start; }
+.shape-collection {
+  --m: 72px; --g: 15px;
+  display: grid; grid-template-columns: repeat(5, var(--m)); grid-template-rows: repeat(3, var(--m)); gap: var(--g);
+}
+.shape-collection .wl-shape { border-radius: calc(var(--m) * .16); }
+.shape-spec { display: grid; gap: var(--wl-space-3); font-size: 13px; line-height: 1.5; }
+.measure { display: flex; align-items: center; gap: var(--wl-space-5); }
+.measure .box { width: 96px; height: 96px; border-radius: var(--wl-radius); background: var(--wl-amber); position: relative; }
+.measure .box + .box { margin-left: -4px; }
+
+/* Pattern */
+.pattern-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--wl-space-4); }
+.pattern-tile { min-height: 200px; border-radius: var(--wl-radius); padding: var(--wl-space-5); display: flex; align-items: flex-end; box-shadow: inset 0 0 0 1px var(--wl-border); overflow: hidden; background: var(--wl-white); }
+.pattern-tile p { background: var(--wl-white); padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; margin: 0; }
+
+/* Icons */
+.icon-bands { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--wl-space-4); }
+.icon-band { border-radius: var(--wl-radius); padding: var(--wl-space-5); display: flex; gap: var(--wl-space-5); align-items: center; justify-content: center; min-height: 120px; }
+.icon-sizes { display: flex; gap: var(--wl-space-8); align-items: flex-end; flex-wrap: wrap; }
+.icon-sizes figure { margin: 0; display: grid; justify-items: center; gap: var(--wl-space-3); font-size: 12px; color: var(--wl-text-secondary); }
+.icon-sizes .wl-icon { color: var(--wl-black); }
+
+/* Photo */
+.photo-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--wl-space-4); }
+.photo-stand-in { aspect-ratio: 4 / 3; border-radius: var(--wl-radius); position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 38% 42%, #c9a58a 0 13%, transparent 13.5%),
+    radial-gradient(ellipse at 40% 92%, #6d5a4f 0 34%, transparent 34.5%),
+    linear-gradient(160deg, #dcd6cc, #a9a39a); }
+.photo-stand-in span { position: absolute; left: 12px; bottom: 10px; z-index: 2; font-size: 12px; font-weight: 700; color: var(--wl-white); }
+.photo-stand-in.wl-photo-overlay::after { z-index: 1; }
+
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5; }
+.ref-table th, .ref-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--wl-border); vertical-align: top; }
+.ref-table th { font-weight: 700; background: var(--wl-beige-light); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--wl-border); border-radius: var(--wl-radius); }
+
+.btn-demo { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--wl-space-4); }
+.btn-demo > div { border-radius: var(--wl-radius); padding: var(--wl-space-6) var(--wl-space-5); display: flex; flex-wrap: wrap; gap: var(--wl-space-4); align-items: center; align-content: flex-start; box-shadow: inset 0 0 0 1px var(--wl-border); }
+.btn-demo .cap { width: 100%; font-size: 11px; font-weight: 700; }
+
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; background: var(--wl-black); color: var(--wl-white); padding: 10px 16px; border-radius: 99px; font-size: 13px; font-weight: 600; transition: opacity .2s, transform .2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 860px) {
+  .ref { grid-template-columns: minmax(0, 1fr); }
+  .shape-collection { --m: calc((100vw - 40px - 60px) / 5); --g: 12px; }
+  .ref-nav { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; border-right: 0; border-bottom: 1px solid var(--wl-border); }
+  .ref-nav ol { display: flex; flex-wrap: wrap; }
+  .ref-nav .meta { display: none; }
+  .type-row, .composition, .checks, .pattern-row { grid-template-columns: 1fr; }
+  .swatch.wide { grid-column: auto; }
+}
+</style>
+</head>
+<body class="wl">
+<div class="ref">
+
+<nav class="ref-nav" aria-label="Sections">
+  <a href="#top" aria-label="WeLearn design system, top" style="padding:0"><svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg></a>
+  <ol>
+    <li><a href="#logo">Logo</a></li>
+    <li><a href="#color">Color</a></li>
+    <li><a href="#pairings">Approved pairings</a></li>
+    <li><a href="#headings">Heading levels</a></li>
+    <li><a href="#type">Typography</a></li>
+    <li><a href="#buttons">Buttons &amp; links</a></li>
+    <li><a href="#shapes">Brand shapes</a></li>
+    <li><a href="#patterns">Patterns</a></li>
+    <li><a href="#icons">Iconography</a></li>
+    <li><a href="#photo">Photography</a></li>
+    <li><a href="#web">Web adaptations</a></li>
+  </ol>
+  <p class="meta">Source: WeLearn Brand Guidelines 2025.<br>Tokens: <code>welearn-tokens.css</code><br>Click any hex, token or class to copy it.</p>
+</nav>
+
+<main id="top">
+
+<div class="ref-intro">
+  <p class="wl-eyebrow">WeLearn design system</p>
+  <h1 class="wl-headline">Web reference for WeLearn projects</h1>
+  <p class="wl-body">Every value on this page is rendered from <code>welearn-tokens.css</code>, so what you see here is what ships. Rules come from the 2025 brand guidelines. Anything added to make the brand work in a browser is marked <em>derived</em> and collected under Web adaptations.</p>
+</div>
+
+<!-- ============ LOGO ============ -->
+<section class="ref-sec" id="logo">
+  <header>
+    <h2 class="wl-subhead">Logo</h2>
+    <p class="wl-body-sm">Use the primary two-color logo wherever its orange holds WCAG AA against the background. Switch to all-black or all-white where it doesn't. Minimum width is 100px on screen.</p>
+  </header>
+
+  <div class="logo-grid">
+    <div class="logo-tile wl-surface-white" style="box-shadow: inset 0 0 0 1px var(--wl-border)"><svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg><span class="cap">Primary · white</span></div>
+    <div class="logo-tile wl-surface-beige-light" style="box-shadow: inset 0 0 0 1px var(--wl-border)"><svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg><span class="cap">Primary · light beige</span></div>
+    <div class="logo-tile wl-surface-orange"><svg class="wl-logo wl-logo--mono" style="color:#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg><span class="cap">All-white · orange</span></div>
+    <div class="logo-tile wl-surface-yellow"><svg class="wl-logo wl-logo--mono" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg><span class="cap">All-black · yellow</span></div>
+    <div class="logo-tile wl-surface-maroon"><svg class="wl-logo wl-logo--mono" style="color:#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg><span class="cap">All-white · maroon</span></div>
+    <div class="logo-tile wl-surface-blue-dark"><svg class="wl-logo wl-logo--mono" style="color:#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg><span class="cap">All-white · dark blue</span></div>
+  </div>
+
+  <h3 class="ref-sub">Clear space</h3>
+  <div style="display:flex; gap: var(--wl-space-7); flex-wrap: wrap; align-items:center">
+    <div class="clearspace"><svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg></div>
+    <ul class="rules">
+      <li class="do">Keep clear space equal to the letter height of the logotype on every side.</li>
+      <li class="do">Don't let it crowd the edge of a section or sit tight against other graphics.</li>
+      <li class="dont">Don't recolor, rotate, stretch, add shadows or effects, or scale parts independently.</li>
+      <li class="dont">Don't place it on busy backgrounds.</li>
+    </ul>
+  </div>
+  <p class="wl-body-sm" style="margin-top: var(--wl-space-5); color: var(--wl-text-secondary)">Files: <button class="copy">welearn-logo.svg</button>, <button class="copy">welearn-logo-black.svg</button>, <button class="copy">welearn-logo-white.svg</button> (vector, extracted from the guide). Inline the SVG and add <button class="copy">wl-logo--mono</button> to make it take <code>currentColor</code>.</p>
+</section>
+
+<!-- ============ COLOR ============ -->
+<section class="ref-sec" id="color">
+  <header>
+    <h2 class="wl-subhead">Color</h2>
+    <p class="wl-body-sm">Orange leads. The guide's proportion page gives orange the largest share, light beige and beige the next, then amber and yellow; the secondary colors appear in small amounts.</p>
+  </header>
+
+  <h3 class="ref-sub">Primary</h3>
+  <div class="swatches" data-swatches="primary"></div>
+
+  <h3 class="ref-sub">Secondary · buttons and text links</h3>
+  <div class="swatches" data-swatches="action"></div>
+
+  <h3 class="ref-sub">Secondary · accents</h3>
+  <div class="swatches" data-swatches="accent"></div>
+
+  <h3 class="ref-sub">Secondary · light tints</h3>
+  <div class="swatches" data-swatches="tint"></div>
+
+  <h3 class="ref-sub">Secondary · darks</h3>
+  <div class="swatches" data-swatches="dark"></div>
+
+  <h3 class="ref-sub">Neutrals</h3>
+  <div class="swatches" data-swatches="neutral"></div>
+
+  <h3 class="ref-sub">Color rules</h3>
+  <ul class="rules">
+    <li class="do">Black for all headline and body copy on light and primary-palette backgrounds.</li>
+    <li class="do">White for headline and body copy on maroon, dark green and dark blue.</li>
+    <li class="do">Orange may emphasize words in a headline on beige or light beige. On orange backgrounds, emphasize with white.</li>
+    <li class="do">White buttons on orange backgrounds.</li>
+    <li class="dont">No white or primary-palette color (orange, amber, yellow) as headline or body text.</li>
+    <li class="dont">No red, teal or blue as backgrounds, and no secondary colors for headlines or body text.</li>
+    <li class="dont">No text pairing that fails WCAG AA.</li>
+  </ul>
+</section>
+
+<!-- ============ PAIRINGS ============ -->
+<section class="ref-sec" id="pairings">
+  <header>
+    <h2 class="wl-subhead">Approved pairings</h2>
+    <p class="wl-body-sm">Contrast ratios calculated from the brand hex values. <span class="badge pass">AA</span> works for all text. <span class="badge large">AA large</span> only works at 24px+, or 18.66px+ bold, and for icons and graphics. <span class="badge fail">Fail</span> is not for text.</p>
+  </header>
+  <div class="pairs" data-pairs></div>
+</section>
+
+<!-- ============ HEADING LEVELS ============ -->
+<section class="ref-sec" id="headings">
+  <header>
+    <h2 class="wl-subhead">Heading levels</h2>
+    <p class="wl-body-sm">HTML headings map one-to-one to the guide's hierarchy, so plain <code>&lt;h1&gt;</code>–<code>&lt;h3&gt;</code> inside <code>.wl</code> are styled without classes. Use one h1 per page, and don't skip levels for the sake of size; if a heading needs a different look, keep the correct tag and add a class.</p>
+  </header>
+
+  <div class="hlevels">
+    <div class="hlevel">
+      <div class="htag"><b>h1</b><span>Brand style:<br>Headline</span></div>
+      <div class="hdemo">
+        <h1>The state of workplace learning</h1>
+        <div class="specline"><span>72px desktop → 44px mobile</span><span>Line height 1.06</span><span>Semibold 600</span><span>Tracking −0.015em</span><span>Sentence case</span><span><button class="copy">.wl-h1</button></span></div>
+      </div>
+    </div>
+    <div class="hlevel">
+      <div class="htag"><b>h2</b><span>Brand style:<br>Subhead</span></div>
+      <div class="hdemo">
+        <h2>What learning leaders told us this year</h2>
+        <div class="specline"><span>34px desktop → 26px mobile</span><span>Line height 1.18</span><span>Semibold 600</span><span>Tracking −0.01em</span><span>Sentence case</span><span><button class="copy">.wl-h2</button></span></div>
+      </div>
+    </div>
+    <div class="hlevel">
+      <div class="htag"><b>h3</b><span>Brand style:<br>H3 heading or label</span></div>
+      <div class="hdemo">
+        <h3>Skills-based planning</h3>
+        <div class="specline"><span>16px all sizes</span><span>Line height 1.4</span><span>Semibold 600</span><span>No tracking</span><span>Sentence case</span><span><button class="copy">.wl-h3</button></span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="ref-sub">Specs and spacing in running content</h3>
+  <div class="table-wrap">
+    <table class="ref-table">
+      <thead><tr><th>Element</th><th>Brand style</th><th>Class alias</th><th>Size</th><th>Weight</th><th>Line height</th><th>Space before</th><th>Space after</th></tr></thead>
+      <tbody>
+        <tr><td><code>h1</code></td><td>Headline</td><td><button class="copy">.wl-h1</button> / <button class="copy">.wl-headline</button></td><td>44–72px</td><td>600</td><td>1.06</td><td>—</td><td>24px</td></tr>
+        <tr><td><code>h2</code></td><td>Subhead</td><td><button class="copy">.wl-h2</button> / <button class="copy">.wl-subhead</button></td><td>26–34px</td><td>600</td><td>1.18</td><td>48px</td><td>16px</td></tr>
+        <tr><td><code>h3</code></td><td>H3 heading or label</td><td><button class="copy">.wl-h3</button></td><td>16px</td><td>600</td><td>1.4</td><td>32px</td><td>4px</td></tr>
+        <tr><td>Eyebrow</td><td>Eyebrow (not a heading)</td><td><button class="copy">.wl-eyebrow</button></td><td>12px caps</td><td>600</td><td>1.4</td><td>—</td><td>12px; sits above h1 or h2 as a <code>&lt;p&gt;</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="ref-sub">In sequence</h3>
+  <div class="flow wl-surface-beige-light" style="box-shadow: inset 0 0 0 1px var(--wl-border)">
+    <p class="wl-eyebrow">2026 report <span class="tag">p.wl-eyebrow</span></p>
+    <h1>The state of workplace learning <span class="tag">h1</span></h1>
+    <p class="wl-body">Learning organizations spent the past year rethinking how programs connect to performance, under tighter budgets and higher expectations.</p>
+    <h2>Budgets and priorities <span class="tag">h2</span></h2>
+    <p class="wl-body">Most leaders expect spending to hold steady, with more of it directed toward manager development and skills planning.</p>
+    <h3>Where the money is going <span class="tag">h3</span></h3>
+    <p class="wl-body">Manager enablement and skills mapping lead the list, followed by measurement tools that tie learning to business outcomes.</p>
+  </div>
+  <ul class="rules" style="margin-top: var(--wl-space-5)">
+    <li class="note">The guide jumps from 34px (subhead) to 16px (H3). In long reports that gap is intentional: h3 reads as a label for a short block, not a section title. If the report needs a deeper outline, nest content under h2 sections rather than enlarging h3.</li>
+  </ul>
+</section>
+
+<!-- ============ TYPOGRAPHY ============ -->
+<section class="ref-sec" id="type">
+  <header>
+    <h2 class="wl-subhead">Typography</h2>
+    <p class="wl-body-sm">Plus Jakarta Sans is the only typeface. Sentence case everywhere except eyebrows, buttons and CTA links. Desktop sizes match the guide's specimen; headline, subhead and callout scale down on narrow screens.</p>
+  </header>
+
+  <div class="type-row">
+    <div class="type-spec"><strong>Eyebrow</strong><button class="copy">.wl-eyebrow</button><br>12px / 1.4 · Semibold 600<br>ALL CAPS · +0.06em</div>
+    <div><p class="wl-eyebrow">Learning leaders report 2026</p></div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>Headline · h1</strong><button class="copy">.wl-headline</button><br>72px / 1.06 · Semibold 600<br>Sentence · −0.015em<br>Mobile: 44px</div>
+    <div><h3 class="wl-headline">Building better humans through learning</h3></div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>Subhead · h2</strong><button class="copy">.wl-subhead</button><br>34px / 1.18 · Semibold 600<br>Sentence · Mobile: 26px</div>
+    <div><h3 class="wl-subhead">What learning leaders told us this year</h3></div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>Callout</strong><button class="copy">.wl-callout</button><br>21px / 1.5 · Medium 500<br>Sentence · Mobile: 19px</div>
+    <div><p class="wl-callout">Most teams now measure learning against business outcomes, not completion rates.</p></div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>Body copy</strong><button class="copy">.wl-body</button><br>16px / 1.625 · Regular 400<br>Max 68 characters per line</div>
+    <div><p class="wl-body">Learning organizations spent the past year rethinking how programs connect to performance. The leaders we surveyed described tighter budgets, higher expectations from executives, and a clear shift toward measuring impact rather than activity. Their teams are smaller, but they are closer to the business than ever.</p></div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>H3 heading or label · h3</strong><button class="copy">.wl-h3</button><br>16px / 1.4 · Semibold 600<br>Paired with <button class="copy">.wl-body-sm</button><br>14px / 1.64 · Regular 400</div>
+    <div class="checks">
+      <div><span></span><div><h4 class="wl-h3">Skills-based planning</h4><p class="wl-body-sm">Teams map programs to the capabilities the business needs next year.</p></div></div>
+      <div><span></span><div><h4 class="wl-h3">Manager enablement</h4><p class="wl-body-sm">Front-line managers carry more of the coaching load than before.</p></div></div>
+    </div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>Lead line</strong><button class="copy">.wl-lead</button><br>16px / 1.75 · Semibold 600<br>From the guide's scale example</div>
+    <div><p class="wl-lead">Three in four leaders expect their budget to hold flat or grow next year.</p></div>
+  </div>
+  <div class="type-row">
+    <div class="type-spec"><strong>Headline emphasis</strong><button class="copy">.wl-em</button><br>Orange on beige / light beige<br>White on orange<br>Large text only</div>
+    <div style="display:grid; gap: var(--wl-space-4)">
+      <div class="wl-surface-beige wl-card"><p class="wl-subhead">The year learning <span class="wl-em">proved its value</span></p></div>
+      <div class="wl-surface-orange wl-card"><p class="wl-subhead">The year learning <span class="wl-em">proved its value</span></p></div>
+    </div>
+  </div>
+
+  <h3 class="ref-sub">In composition</h3>
+  <div class="composition">
+    <div class="wl-surface-beige-light">
+      <svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg>
+      <h3 class="wl-headline" style="font-size: clamp(2.25rem, 1.5rem + 2.6vw, 3.75rem)">The state of workplace learning</h3>
+      <p class="wl-body">Learning organizations spent the past year rethinking how programs connect to performance. The leaders we surveyed described tighter budgets and higher expectations from executives.</p>
+      <a class="wl-link-cta" href="#type">Read the findings</a>
+    </div>
+    <div class="wl-surface-beige">
+      <svg class="wl-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 458.18 47.96" role="img" aria-label="WeLearn"><path class="we" fill="#000" d="M 19.05 47.96 C 16.79 47.96 15.23 46.77 14.39 44.37 L 0.49 5.05 C 0.00 3.64 0.10 2.44 0.79 1.46 C 1.47 0.49 2.64 0.00 4.28 0.00 C 5.48 0.00 6.41 0.28 7.07 0.83 C 7.74 1.39 8.27 2.26 8.67 3.46 L 19.31 35.12 L 30.49 3.53 C 31.33 1.18 32.75 0.00 34.75 0.00 C 35.81 0.00 36.65 0.29 37.27 0.86 C 37.89 1.44 38.43 2.35 38.87 3.59 L 49.85 35.59 L 60.82 3.46 C 61.22 2.31 61.75 1.44 62.42 0.86 C 63.09 0.29 63.99 0.00 65.15 0.00 C 66.57 0.00 67.61 0.49 68.27 1.46 C 68.94 2.44 69.03 3.64 68.54 5.05 L 54.50 44.44 C 54.06 45.64 53.48 46.52 52.77 47.10 C 52.06 47.68 51.11 47.96 49.91 47.96 C 48.71 47.96 47.76 47.68 47.05 47.10 C 46.34 46.52 45.77 45.61 45.32 44.37 L 34.48 13.57 L 23.57 44.44 C 23.12 45.64 22.56 46.52 21.88 47.10 C 21.18 47.68 20.25 47.96 19.05 47.96  M 101.98 47.43 C 98.96 47.43 97.46 45.93 97.46 42.91 L 97.46 5.05 C 97.46 2.04 98.96 0.53 101.98 0.53 L 125.73 0.53 C 128.04 0.53 129.19 1.64 129.19 3.86 C 129.19 6.16 128.04 7.32 125.73 7.32 L 105.64 7.32 L 105.64 20.22 L 124.27 20.22 C 126.57 20.22 127.73 21.36 127.73 23.62 C 127.73 25.88 126.57 27.01 124.27 27.01 L 105.64 27.01 L 105.64 40.64 L 125.73 40.64 C 128.04 40.64 129.19 41.78 129.19 44.04 C 129.19 46.30 128.04 47.43 125.73 47.43 Z M 101.98 47.43"/><path class="learn" fill="#EF5617" d="M 163.11 47.43 C 160.23 47.43 158.79 45.97 158.79 43.04 L 158.79 4.66 C 158.79 1.77 160.20 0.33 163.04 0.33 C 165.88 0.33 167.30 1.77 167.30 4.66 L 167.30 40.18 L 186.59 40.18 C 189.07 40.18 190.32 41.38 190.32 43.77 C 190.32 46.21 189.07 47.43 186.59 47.43 Z M 163.11 47.43  M 222.58 47.43 C 219.56 47.43 218.05 45.93 218.05 42.91 L 218.05 5.05 C 218.05 2.04 219.56 0.53 222.58 0.53 L 246.33 0.53 C 248.63 0.53 249.79 1.64 249.79 3.86 C 249.79 6.16 248.63 7.32 246.33 7.32 L 226.24 7.32 L 226.24 20.22 L 244.86 20.22 C 247.17 20.22 248.32 21.36 248.32 23.62 C 248.32 25.88 247.17 27.01 244.86 27.01 L 226.24 27.01 L 226.24 40.64 L 246.33 40.64 C 248.63 40.64 249.79 41.78 249.79 44.04 C 249.79 46.30 248.63 47.43 246.33 47.43 Z M 222.58 47.43  M 299.91 9.78 L 291.46 29.80 L 308.49 29.80 L 300.04 9.78 Z M 280.82 47.96 C 279.27 47.96 278.16 47.43 277.49 46.37 C 276.83 45.30 276.85 44.02 277.56 42.51 L 295.12 3.59 C 295.70 2.31 296.39 1.39 297.22 0.83 C 298.04 0.28 298.98 0.00 300.04 0.00 C 301.06 0.00 301.98 0.28 302.80 0.83 C 303.62 1.39 304.32 2.31 304.90 3.59 L 322.53 42.51 C 323.24 44.06 323.28 45.36 322.66 46.40 C 322.04 47.44 320.98 47.96 319.47 47.96 C 318.23 47.96 317.26 47.66 316.57 47.07 C 315.89 46.46 315.28 45.55 314.75 44.30 L 311.42 36.59 L 288.54 36.59 L 285.28 44.30 C 284.70 45.59 284.10 46.52 283.48 47.10 C 282.86 47.68 281.97 47.96 280.82 47.96  M 359.77 22.35 L 370.15 22.35 C 376.36 22.35 379.46 19.82 379.46 14.77 C 379.46 9.76 376.36 7.25 370.15 7.25 L 359.77 7.25 Z M 355.52 47.96 C 352.68 47.96 351.26 46.50 351.26 43.57 L 351.26 4.86 C 351.26 1.97 352.70 0.53 355.59 0.53 L 371.62 0.53 C 376.76 0.53 380.73 1.76 383.52 4.22 C 386.32 6.69 387.71 10.14 387.71 14.57 C 387.71 18.07 386.80 20.96 384.99 23.25 C 383.17 25.54 380.55 27.07 377.14 27.88 C 379.40 28.58 381.26 30.29 382.73 33.00 L 387.71 42.24 C 388.47 43.66 388.61 44.97 388.15 46.17 C 387.68 47.36 386.54 47.96 384.72 47.96 C 383.52 47.96 382.55 47.71 381.79 47.20 C 381.04 46.69 380.38 45.90 379.80 44.84 L 373.08 32.46 C 372.28 30.96 371.34 29.95 370.25 29.44 C 369.16 28.93 367.78 28.67 366.09 28.67 L 359.77 28.67 L 359.77 43.57 C 359.77 46.50 358.36 47.96 355.52 47.96  M 422.66 47.96 C 420.00 47.96 418.67 46.59 418.67 43.84 L 418.67 4.26 C 418.67 2.88 419.01 1.83 419.70 1.10 C 420.39 0.37 421.29 0.00 422.39 0.00 C 423.41 0.00 424.18 0.19 424.69 0.57 C 425.20 0.94 425.81 1.57 426.52 2.46 L 450.27 33.26 L 450.27 4.06 C 450.27 1.36 451.60 0.00 454.26 0.00 C 456.88 0.00 458.18 1.36 458.18 4.06 L 458.18 43.97 C 458.18 45.21 457.87 46.19 457.25 46.90 C 456.63 47.61 455.79 47.96 454.72 47.96 C 453.70 47.96 452.89 47.77 452.30 47.36 C 451.70 46.96 451.04 46.32 450.33 45.44 L 426.58 14.57 L 426.58 43.84 C 426.58 46.59 425.27 47.96 422.66 47.96"/></svg>
+      <p class="wl-eyebrow">Key findings</p>
+      <h3 class="wl-subhead">Building better humans through learning</h3>
+      <p class="wl-body">Leaders described a shift from measuring activity to measuring impact, with smaller teams working closer to the business.</p>
+      <div class="checks">
+        <div><span></span><div><h4 class="wl-h3">Impact over activity</h4><p class="wl-body-sm">Completion rates are giving way to performance metrics.</p></div></div>
+        <div><span></span><div><h4 class="wl-h3">Closer to the business</h4><p class="wl-body-sm">L&amp;D sits in more planning meetings than last year.</p></div></div>
+      </div>
+      <p class="wl-lead">Three in four leaders expect their budget to hold or grow.</p>
+      <div><a class="wl-btn wl-btn--primary" href="#type">Download the report</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUTTONS ============ -->
+<section class="ref-sec" id="buttons">
+  <header>
+    <h2 class="wl-subhead">Buttons &amp; links</h2>
+    <p class="wl-body-sm">Bright purple is reserved for interactive elements. Pill-shaped buttons with ExtraBold caps; standalone links use caps with an arrow; inline links stay sentence case and underlined.</p>
+  </header>
+  <div class="btn-demo">
+    <div class="wl-surface-white">
+      <span class="cap">On white</span>
+      <a class="wl-btn wl-btn--primary" href="#buttons">Primary CTA</a>
+      <a class="wl-btn wl-btn--secondary" href="#buttons">Secondary CTA</a>
+      <a class="wl-link-cta" href="#buttons">Text link</a>
+    </div>
+    <div class="wl-surface-beige">
+      <span class="cap">On beige</span>
+      <a class="wl-btn wl-btn--primary" href="#buttons">Primary CTA</a>
+      <a class="wl-btn wl-btn--secondary" href="#buttons">Secondary CTA</a>
+      <a class="wl-link-cta" href="#buttons">Text link</a>
+    </div>
+    <div class="wl-surface-orange" style="box-shadow:none">
+      <span class="cap">On orange</span>
+      <a class="wl-btn wl-btn--on-orange" href="#buttons">Primary CTA</a>
+    </div>
+    <div class="wl-surface-green-dark" style="box-shadow:none">
+      <span class="cap">On dark green</span>
+      <a class="wl-btn wl-btn--primary" href="#buttons">Primary CTA</a>
+    </div>
+  </div>
+  <p class="wl-body" style="margin-top: var(--wl-space-6)">Inline links look like <a class="wl-link" href="#buttons">this sample link in body copy</a>, using the deeper purple so they pass AA on beige.</p>
+  <div class="table-wrap" style="margin-top: var(--wl-space-6)">
+    <table class="ref-table">
+      <thead><tr><th>Class</th><th>Use</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td><button class="copy">wl-btn wl-btn--primary</button></td><td>Main action per view</td><td>Purple fill, white 12px ExtraBold caps, pill, 44px min height. Hover: deep purple.</td></tr>
+        <tr><td><button class="copy">wl-btn wl-btn--secondary</button></td><td>Alternate action</td><td>1.5px purple outline, deep purple text. Hover: fills purple.</td></tr>
+        <tr><td><button class="copy">wl-btn wl-btn--on-orange</button></td><td>Any button on orange</td><td>White fill, black text, per the guide.</td></tr>
+        <tr><td><button class="copy">wl-link-cta</button></td><td>Standalone "read more" links</td><td>12px ExtraBold caps, deep purple, arrow.</td></tr>
+        <tr><td><button class="copy">wl-link</button></td><td>Links inside paragraphs</td><td>Deep purple, 1px underline, 2px on hover.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ SHAPES ============ -->
+<section class="ref-sec" id="shapes">
+  <header>
+    <h2 class="wl-subhead">Brand shapes</h2>
+    <p class="wl-body-sm">Rounded squares and rectangles on an even grid. Use them in collections of two or more to bring color into a layout, or singly to hold a photo or icon.</p>
+  </header>
+  <div class="shape-demo">
+    <div class="shape-collection" aria-hidden="true">
+      <div class="wl-shape" style="grid-column: 1 / 3; grid-row: 1 / 3; --wl-shape-color: var(--wl-orange)"></div>
+      <div class="wl-shape" style="grid-column: 3 / 5; grid-row: 1; --wl-shape-color: var(--wl-amber)"></div>
+      <div class="wl-shape" style="grid-column: 3; grid-row: 2; --wl-shape-color: var(--wl-yellow)"></div>
+      <div class="wl-shape" style="grid-column: 4; grid-row: 2; --wl-shape-color: var(--wl-orange)"></div>
+      <div class="wl-shape" style="grid-column: 5; grid-row: 1 / 4; --wl-shape-color: var(--wl-orange)"></div>
+      <div class="wl-shape" style="grid-column: 1; grid-row: 3; --wl-shape-color: var(--wl-yellow)"></div>
+      <div class="wl-shape" style="grid-column: 2 / 4; grid-row: 3; --wl-shape-color: var(--wl-amber)"></div>
+      <div class="wl-shape" style="grid-column: 4; grid-row: 3; --wl-shape-color: var(--wl-teal)"></div>
+    </div>
+    <div class="shape-spec">
+      <div class="measure"><div class="box"></div></div>
+      <p>Module <button class="copy">--wl-shape-module</button> 96px<br>Gap <button class="copy">--wl-shape-gap</button> 20px<br>Radius <button class="copy">--wl-radius</button> 16px</p>
+      <p style="color: var(--wl-text-secondary); max-width: 34ch">Measured from the guide's vector art: radius ≈ 16% of the module, gap ≈ 20%. Scale all three together.</p>
+    </div>
+  </div>
+  <h3 class="ref-sub">Shape rules</h3>
+  <ul class="rules">
+    <li class="do">Any primary-palette color can fill a shape.</li>
+    <li class="do">Red, teal or blue may appear sparingly as a single accent in a collection (teal above).</li>
+    <li class="do">Keep spacing even and the corner radius identical across every shape, photo and card in a composition.</li>
+    <li class="dont">Don't use red, teal and blue together in one collection.</li>
+    <li class="dont">Don't rotate shapes or mix radii.</li>
+  </ul>
+</section>
+
+<!-- ============ PATTERNS ============ -->
+<section class="ref-sec" id="patterns">
+  <header>
+    <h2 class="wl-subhead">Patterns</h2>
+    <p class="wl-body-sm">Patterns are background texture, secondary to brand shapes. The CSS version below reproduces the simplest grid pattern from the guide; ask the brand team for the mosaic pattern files if you need them.</p>
+  </header>
+  <div class="pattern-row">
+    <div class="pattern-tile wl-pattern" style="--wl-pattern-color: var(--wl-yellow)"><p>Yellow · 28%</p></div>
+    <div class="pattern-tile wl-pattern" style="--wl-pattern-color: #FF9FB2"><p>Pink · 28%</p></div>
+    <div class="pattern-tile wl-pattern" style="--wl-pattern-color: #5FE3E3"><p>Light blue · 28%</p></div>
+  </div>
+  <ul class="rules" style="margin-top: var(--wl-space-5)">
+    <li class="do">Keep at 25–30% opacity (<button class="copy">--wl-pattern-opacity</button>) and in the background.</li>
+    <li class="do">One pattern style per composition.</li>
+    <li class="dont">Don't let a pattern compete with the logo or brand shapes, or sit behind text at a strength that hurts contrast.</li>
+  </ul>
+</section>
+
+<!-- ============ ICONS ============ -->
+<section class="ref-sec" id="icons">
+  <header>
+    <h2 class="wl-subhead">Iconography</h2>
+    <p class="wl-body-sm">Thin-line icons with rounded corners, in the style of flaticon.com's thin line set. One color per set. The icons below are placeholders drawn to that style.</p>
+  </header>
+  <div class="icon-bands">
+    <div class="icon-band wl-surface-orange"><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16"/><path d="M6.5 20.5v-4M10.5 20.5v-6.5M14.5 20.5v-9M18.5 20.5v-12"/><path d="M4.5 12.5 9 8l3 2.5 6.5-6.5"/><path d="M15 4h3.5v3.5"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M12 16.5V20M8.5 20h7"/><circle cx="8.5" cy="9" r="1.75"/><path d="M6 13.5c.4-1.4 1.3-2.1 2.5-2.1s2.1.7 2.5 2.1M13.5 8.5h4.5M13.5 11h4.5M13.5 13.5h3"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c.5-3.4 2.6-5.5 5.5-5.5s5 2.1 5.5 5.5"/><circle cx="5.5" cy="9.5" r="2.25"/><path d="M2.5 17.5c.3-2.2 1.5-3.6 3.3-3.8"/><circle cx="18.5" cy="9.5" r="2.25"/><path d="M21.5 17.5c-.3-2.2-1.5-3.6-3.3-3.8"/></svg></div>
+    <div class="icon-band wl-surface-yellow"><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16"/><path d="M6.5 20.5v-4M10.5 20.5v-6.5M14.5 20.5v-9M18.5 20.5v-12"/><path d="M4.5 12.5 9 8l3 2.5 6.5-6.5"/><path d="M15 4h3.5v3.5"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M12 16.5V20M8.5 20h7"/><circle cx="8.5" cy="9" r="1.75"/><path d="M6 13.5c.4-1.4 1.3-2.1 2.5-2.1s2.1.7 2.5 2.1M13.5 8.5h4.5M13.5 11h4.5M13.5 13.5h3"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c.5-3.4 2.6-5.5 5.5-5.5s5 2.1 5.5 5.5"/><circle cx="5.5" cy="9.5" r="2.25"/><path d="M2.5 17.5c.3-2.2 1.5-3.6 3.3-3.8"/><circle cx="18.5" cy="9.5" r="2.25"/><path d="M21.5 17.5c-.3-2.2-1.5-3.6-3.3-3.8"/></svg></div>
+    <div class="icon-band wl-surface-beige"><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16"/><path d="M6.5 20.5v-4M10.5 20.5v-6.5M14.5 20.5v-9M18.5 20.5v-12"/><path d="M4.5 12.5 9 8l3 2.5 6.5-6.5"/><path d="M15 4h3.5v3.5"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M12 16.5V20M8.5 20h7"/><circle cx="8.5" cy="9" r="1.75"/><path d="M6 13.5c.4-1.4 1.3-2.1 2.5-2.1s2.1.7 2.5 2.1M13.5 8.5h4.5M13.5 11h4.5M13.5 13.5h3"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c.5-3.4 2.6-5.5 5.5-5.5s5 2.1 5.5 5.5"/><circle cx="5.5" cy="9.5" r="2.25"/><path d="M2.5 17.5c.3-2.2 1.5-3.6 3.3-3.8"/><circle cx="18.5" cy="9.5" r="2.25"/><path d="M21.5 17.5c-.3-2.2-1.5-3.6-3.3-3.8"/></svg></div>
+    <div class="icon-band wl-surface-blue-dark"><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16"/><path d="M6.5 20.5v-4M10.5 20.5v-6.5M14.5 20.5v-9M18.5 20.5v-12"/><path d="M4.5 12.5 9 8l3 2.5 6.5-6.5"/><path d="M15 4h3.5v3.5"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M12 16.5V20M8.5 20h7"/><circle cx="8.5" cy="9" r="1.75"/><path d="M6 13.5c.4-1.4 1.3-2.1 2.5-2.1s2.1.7 2.5 2.1M13.5 8.5h4.5M13.5 11h4.5M13.5 13.5h3"/></svg><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c.5-3.4 2.6-5.5 5.5-5.5s5 2.1 5.5 5.5"/><circle cx="5.5" cy="9.5" r="2.25"/><path d="M2.5 17.5c.3-2.2 1.5-3.6 3.3-3.8"/><circle cx="18.5" cy="9.5" r="2.25"/><path d="M21.5 17.5c-.3-2.2-1.5-3.6-3.3-3.8"/></svg></div>
+  </div>
+  <h3 class="ref-sub">Sizes</h3>
+  <div class="icon-sizes">
+    <figure><svg class="wl-icon wl-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2.5"/><path d="M12 16v4.5M8 20.5h8"/><path d="M12 6.5v7M12 6.5c-1.2-.9-2.7-1.2-4.5-1v7c1.8-.2 3.3.1 4.5 1M12 6.5c1.2-.9 2.7-1.2 4.5-1v7c-1.8-.2-3.3.1-4.5 1"/></svg><figcaption>Small · 24px · <button class="copy">wl-icon wl-icon-sm</button></figcaption></figure>
+    <figure><svg class="wl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2.5"/><path d="M12 16v4.5M8 20.5h8"/><path d="M12 6.5v7M12 6.5c-1.2-.9-2.7-1.2-4.5-1v7c1.8-.2 3.3.1 4.5 1M12 6.5c1.2-.9 2.7-1.2 4.5-1v7c-1.8-.2-3.3.1-4.5 1"/></svg><figcaption>Standard · 48px · <button class="copy">wl-icon</button></figcaption></figure>
+    <figure><svg class="wl-icon wl-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="13" rx="2.5"/><path d="M12 16v4.5M8 20.5h8"/><path d="M12 6.5v7M12 6.5c-1.2-.9-2.7-1.2-4.5-1v7c1.8-.2 3.3.1 4.5 1M12 6.5c1.2-.9 2.7-1.2 4.5-1v7c-1.8-.2-3.3.1-4.5 1"/></svg><figcaption>Large · 64px · <button class="copy">wl-icon wl-icon-lg</button></figcaption></figure>
+  </div>
+  <ul class="rules" style="margin-top: var(--wl-space-6)">
+    <li class="do">Black icons on orange, amber or yellow.</li>
+    <li class="do">Orange icons on light or dark backgrounds. Surface classes set this automatically.</li>
+    <li class="dont">Don't mix icon colors within a set, layout or collection.</li>
+  </ul>
+</section>
+
+<!-- ============ PHOTO ============ -->
+<section class="ref-sec" id="photo">
+  <header>
+    <h2 class="wl-subhead">Photography</h2>
+    <p class="wl-body-sm">Natural light, neutral-to-warm white balance, real and candid. Three subjects: learning leaders (1–3 people, tech present), teams and spaces (4+ people, open modern spaces), and consulting and learning experiences (welcoming body language, business settings, not higher-ed).</p>
+  </header>
+  <div class="photo-row">
+    <div class="photo-stand-in"><span>Untreated</span></div>
+    <div class="photo-stand-in wl-photo-overlay" style="--wl-overlay-color: var(--wl-orange)"><span>Orange overlay · 75%</span></div>
+    <div class="photo-stand-in wl-photo-overlay" style="--wl-overlay-color: var(--wl-blue-dark)"><span>Dark blue overlay · 75%</span></div>
+    <div class="photo-stand-in wl-photo-overlay" style="--wl-overlay-color: var(--wl-teal)"><span>Teal overlay · 75%</span></div>
+  </div>
+  <ul class="rules" style="margin-top: var(--wl-space-5)">
+    <li class="do">Overlays use approved primary or secondary colors at about 75% (<button class="copy">--wl-overlay-opacity</button>).</li>
+    <li class="do">One overlay photo per composition; pair it with untreated photos. Good for variety in long reports.</li>
+    <li class="do">Photos take the same <code>--wl-radius</code> as the shapes around them.</li>
+    <li class="dont">No staged, sterile or dated imagery, cluttered spaces, or loud clothing colors and patterns.</li>
+  </ul>
+</section>
+
+<!-- ============ WEB ============ -->
+<section class="ref-sec" id="web" style="border-bottom: 0">
+  <header>
+    <h2 class="wl-subhead">Web adaptations</h2>
+    <p class="wl-body-sm">The guide is written for print and slides. These are the decisions made to carry it to the browser, worth confirming with the brand owner.</p>
+  </header>
+  <div class="table-wrap">
+    <table class="ref-table">
+      <thead><tr><th>Decision</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Added deep purple <button class="copy">#7A41ED</button> for hover, secondary button text and links</td><td>Brand purple is 4.05:1 on beige and 4.34:1 on light beige, just under AA for small text. Deep purple passes on every light surface.</td></tr>
+        <tr><td>Charcoal <code>#3A3F3E</code> for secondary text, not dark gray</td><td>Dark gray is 3.99:1 on white. Keep it to borders, large text and disabled states.</td></tr>
+        <tr><td>Orange and white emphasis limited to large text</td><td>Orange on beige is 3.06:1 and white on orange 3.49:1, which pass only as large text. The guide uses both in headlines, so this holds the intent.</td></tr>
+        <tr><td>White buttons on orange use black text</td><td>The guide shows white buttons on orange but not their label color; black gives 21:1.</td></tr>
+        <tr><td>Responsive type via <code>clamp()</code></td><td>72px headlines don't fit phones. Desktop sizes are exactly as specified.</td></tr>
+        <tr><td>4px spacing scale and 68-character line length</td><td>Not in the guide; gives the report consistent rhythm and readable paragraphs.</td></tr>
+        <tr><td>One radius (16px) for shapes, cards and photos; pills for buttons</td><td>The guide forbids mixing radii within a composition.</td></tr>
+        <tr><td>Light theme only</td><td>The brand has no dark mode. Dark sections use maroon, dark green or dark blue surfaces instead.</td></tr>
+        <tr><td>Focus ring: 2px deep purple, 3px offset</td><td>Keyboard accessibility; not covered by the guide.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+</div>
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var swatches = {
+    primary: [
+      ["Orange", "#EF5617", "239, 86, 23", "--wl-orange", "Logo, emphasis, icons. PMS 172 C"],
+      ["Amber", "#F99930", "249, 153, 48", "--wl-amber", "Backgrounds, shapes. PMS 151 C"],
+      ["Yellow", "#FFC914", "255, 201, 20", "--wl-yellow", "Backgrounds, shapes. PMS 123 C"],
+      ["Beige", "#F2F1DF", "242, 241, 223", "--wl-beige", "Section backgrounds"],
+      ["Light beige", "#F9F8F2", "249, 248, 242", "--wl-beige-light", "Page and section backgrounds"]
+    ],
+    action: [
+      ["Bright purple", "#8754EF", "135, 84, 239", "--wl-purple", "Buttons and text links only"],
+      ["Deep purple", "#7A41ED", "122, 65, 237", "--wl-purple-deep", "Derived. Hover, links on beige"]
+    ],
+    accent: [
+      ["Red", "#EF4156", "239, 65, 86", "--wl-red", "Sparing accent in shape collections"],
+      ["Teal", "#00AFAD", "0, 175, 173", "--wl-teal", "Sparing accent in shape collections"],
+      ["Blue", "#006B91", "0, 107, 145", "--wl-blue", "Sparing accent in shape collections"]
+    ],
+    tint: [
+      ["Light yellow", "#FFEEBC", "255, 238, 188", "--wl-yellow-light", "Light backgrounds, patterns"],
+      ["Pink", "#FFE6EB", "255, 230, 235", "--wl-pink", "Light backgrounds, patterns"],
+      ["Light blue", "#CFF9F9", "207, 249, 249", "--wl-blue-light", "Light backgrounds, patterns"]
+    ],
+    dark: [
+      ["Maroon", "#661D29", "102, 29, 41", "--wl-maroon", "Dark sections, white text"],
+      ["Dark green", "#084337", "8, 67, 55", "--wl-green-dark", "Dark sections, white text"],
+      ["Dark blue", "#00374C", "0, 55, 76", "--wl-blue-dark", "Dark sections, white text"]
+    ],
+    neutral: [
+      ["Black", "#000000", "0, 0, 0", "--wl-black", "All headline and body text"],
+      ["Charcoal", "#3A3F3E", "58, 63, 62", "--wl-charcoal", "Secondary text"],
+      ["Dark gray", "#798180", "121, 129, 128", "--wl-gray-dark", "Borders, large text only"],
+      ["Medium gray", "#B2B7B6", "178, 183, 182", "--wl-gray-medium", "Strong borders"],
+      ["Light gray", "#CDD0CF", "205, 208, 207", "--wl-gray-light", "Borders, dividers"],
+      ["Lightest gray", "#F1F1EE", "241, 241, 238", "--wl-gray-lightest", "Subtle fills"]
+    ]
+  };
+
+  function lum(hex) {
+    var c = [1, 3, 5].map(function (i) {
+      var v = parseInt(hex.substr(i, 2), 16) / 255;
+      return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function ratio(a, b) {
+    var x = lum(a), y = lum(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  }
+
+  Object.keys(swatches).forEach(function (group) {
+    var host = document.querySelector('[data-swatches="' + group + '"]');
+    swatches[group].forEach(function (s) {
+      var onWhite = ratio("#000000", s[1]) >= ratio("#FFFFFF", s[1]);
+      var el = document.createElement("div");
+      el.className = "swatch" + (s[5] ? " " + s[5] : "");
+      el.innerHTML =
+        '<div class="chip" style="background:' + s[1] + ';color:' + (onWhite ? "#000" : "#fff") + ';' +
+        (s[1] === "#F9F8F2" || s[1] === "#F1F1EE" ? "box-shadow:inset 0 -1px 0 var(--wl-border)" : "") + '"></div>' +
+        '<div class="info"><span class="name">' + s[0] + '</span>' +
+        '<button class="copy">' + s[1] + '</button>' +
+        '<span class="mono" style="font-size:12px">RGB ' + s[2] + '</span>' +
+        '<button class="copy">' + s[3] + '</button>' +
+        '<span class="use">' + s[4] + '</span></div>';
+      host.appendChild(el);
+    });
+  });
+
+  var pairs = [
+    ["#000000", "#FFFFFF", "Black on white", "white"],
+    ["#000000", "#F9F8F2", "Black on light beige", "beige-light"],
+    ["#000000", "#F2F1DF", "Black on beige", "beige"],
+    ["#000000", "#EF5617", "Black on orange", "orange"],
+    ["#000000", "#F99930", "Black on amber", "amber"],
+    ["#000000", "#FFC914", "Black on yellow", "yellow"],
+    ["#000000", "#FFEEBC", "Black on light yellow", "yellow-light"],
+    ["#000000", "#FFE6EB", "Black on pink", "pink"],
+    ["#000000", "#CFF9F9", "Black on light blue", "blue-light"],
+    ["#FFFFFF", "#661D29", "White on maroon", "maroon"],
+    ["#FFFFFF", "#084337", "White on dark green", "green-dark"],
+    ["#FFFFFF", "#00374C", "White on dark blue", "blue-dark"],
+    ["#EF5617", "#F2F1DF", "Orange emphasis on beige", "beige", true],
+    ["#FFFFFF", "#EF5617", "White emphasis on orange", "orange", true],
+    ["#7A41ED", "#F2F1DF", "Deep purple link on beige", "beige", false, true],
+    ["#8754EF", "#F2F1DF", "Brand purple link on beige", "beige", false, true],
+    ["#3A3F3E", "#FFFFFF", "Charcoal on white", "white"],
+    ["#798180", "#FFFFFF", "Dark gray on white", "white"]
+  ];
+  var pairHost = document.querySelector("[data-pairs]");
+  pairs.forEach(function (p) {
+    var r = ratio(p[0], p[1]);
+    var cls = r >= 4.5 ? "pass" : r >= 3 ? "large" : "fail";
+    var label = r >= 4.5 ? "AA" : r >= 3 ? "AA large" : "Fail";
+    var el = document.createElement("div");
+    var light = ["white", "beige-light", "beige", "yellow-light", "pink", "blue-light"].indexOf(p[3]) > -1;
+    el.className = "pair wl-surface-" + p[3] + (light ? " bordered" : "");
+    el.innerHTML =
+      (p[5] ? '<span class="big" style="color:' + p[0] + ';font-size:20px;text-decoration:underline;text-underline-offset:.18em;text-decoration-thickness:1px">Link text</span>'
+            : '<span class="big" style="color:' + p[0] + '">Aa Headline</span>') +
+      (p[4] ? '<span class="small">Body text stays black here</span>'
+            : '<span class="small" style="color:' + p[0] + '">Body copy at 14px reads like this.</span>') +
+      '<span class="foot"><span>' + p[2] + ' · ' + r.toFixed(2) + ':1</span><span class="badge ' + cls + '">' + label + '</span></span>';
+    pairHost.appendChild(el);
+  });
+
+  var check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.25"/><path d="m8 12.3 2.7 2.7L16 9.6"/></svg>';
+  document.querySelectorAll(".checks > div > span").forEach(function (s) { s.outerHTML = check; });
+
+  var toast = document.querySelector(".toast"), t;
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest(".copy");
+    if (!b) return;
+    var text = b.textContent.trim();
+    var done = function () {
+      toast.textContent = "Copied " + text;
+      toast.classList.add("show");
+      clearTimeout(t); t = setTimeout(function () { toast.classList.remove("show"); }, 1400);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done); else done();
+  });
+})();
+</script>
+</body>
+</html>

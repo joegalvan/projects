@@ -1,0 +1,423 @@
+/* =====================================================================
+   WeLearn Design System — Web tokens & base styles
+   Source: WeLearn Brand Guidelines 2025 (PDF)
+   Font: Plus Jakarta Sans (Google Fonts)
+
+   Load the font in your <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+   Values marked [derived] are not in the brand guide. They were added
+   to make the brand work on the web (accessibility, interaction states).
+   ===================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Color: primary palette ---------- */
+  --wl-orange:        #EF5617;  /* PMS 172 C — logo, emphasis, icons */
+  --wl-amber:         #F99930;  /* PMS 151 C */
+  --wl-yellow:        #FFC914;  /* PMS 123 C */
+  --wl-beige:         #F2F1DF;
+  --wl-beige-light:   #F9F8F2;
+
+  /* ---------- Color: secondary — accents ---------- */
+  /* Never as backgrounds or text. Sparing accents in shape collections only. */
+  --wl-red:           #EF4156;
+  --wl-teal:          #00AFAD;
+  --wl-blue:          #006B91;
+
+  /* ---------- Color: secondary — buttons & text links ---------- */
+  --wl-purple:        #8754EF;
+  --wl-purple-deep:   #7A41ED;  /* [derived] hover/pressed; links on beige (AA 4.84:1) */
+
+  /* ---------- Color: secondary — tints (light backgrounds) ---------- */
+  --wl-yellow-light:  #FFEEBC;
+  --wl-pink:          #FFE6EB;
+  --wl-blue-light:    #CFF9F9;
+
+  /* ---------- Color: secondary — darks (dark backgrounds) ---------- */
+  --wl-maroon:        #661D29;
+  --wl-green-dark:    #084337;
+  --wl-blue-dark:     #00374C;
+
+  /* ---------- Color: neutrals ---------- */
+  --wl-black:         #000000;
+  --wl-charcoal:      #3A3F3E;
+  --wl-gray-dark:     #798180;  /* 3.99:1 on white — large text, borders, icons only */
+  --wl-gray-medium:   #B2B7B6;
+  --wl-gray-light:    #CDD0CF;
+  --wl-gray-lightest: #F1F1EE;
+  --wl-white:         #FFFFFF;
+
+  /* ---------- Semantic color roles ---------- */
+  --wl-text:            var(--wl-black);     /* all headline + body copy */
+  --wl-text-secondary:  var(--wl-charcoal);  /* captions, meta, notes */
+  --wl-text-inverse:    var(--wl-white);     /* on maroon / dark green / dark blue */
+  --wl-emphasis:        var(--wl-orange);    /* headline emphasis on beige — large text only */
+  --wl-surface:         var(--wl-white);
+  --wl-surface-warm:    var(--wl-beige-light);
+  --wl-surface-sand:    var(--wl-beige);
+  --wl-border:          var(--wl-gray-light);
+  --wl-border-strong:   var(--wl-gray-medium);
+  --wl-action:          var(--wl-purple);
+  --wl-action-hover:    var(--wl-purple-deep);
+  --wl-focus-ring:      var(--wl-purple-deep);
+
+  /* ---------- Photo overlays ---------- */
+  --wl-overlay-opacity: 0.75;  /* ~75% per guide; one overlay photo per composition */
+  --wl-pattern-opacity: 0.28;  /* 25–30% per guide */
+
+  /* ---------- Typography ---------- */
+  --wl-font: "Plus Jakarta Sans", "Segoe UI", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+
+  --wl-weight-regular:   400;
+  --wl-weight-medium:    500;
+  --wl-weight-semibold:  600;
+  --wl-weight-bold:      700;
+  --wl-weight-extrabold: 800;
+
+  /* Sizes: desktop values come straight from the guide's type specimen;
+     clamp() scales the large styles down on small screens [derived]. */
+  --wl-size-headline: clamp(2.75rem, 1.6rem + 4.6vw, 4.5rem);    /* 44 → 72px */
+  --wl-size-subhead:  clamp(1.625rem, 1.3rem + 1.3vw, 2.125rem); /* 26 → 34px */
+  --wl-size-callout:  clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem); /* 19 → 21px */
+  --wl-size-body:     1rem;      /* 16px */
+  --wl-size-h3:       1rem;      /* 16px */
+  --wl-size-small:    0.875rem;  /* 14px — body in multi-column / cards */
+  --wl-size-eyebrow:  0.75rem;   /* 12px */
+  --wl-size-button:   0.75rem;   /* 12px */
+
+  --wl-leading-headline: 1.06;
+  --wl-leading-subhead:  1.18;
+  --wl-leading-callout:  1.5;
+  --wl-leading-body:     1.625;
+  --wl-leading-small:    1.64;
+
+  --wl-tracking-headline: -0.015em;
+  --wl-tracking-caps:      0.06em;
+
+  --wl-measure: 68ch;  /* max line length for body copy [derived] */
+
+  /* ---------- Spacing (4px base) [derived] ---------- */
+  --wl-space-1:  4px;
+  --wl-space-2:  8px;
+  --wl-space-3:  12px;
+  --wl-space-4:  16px;
+  --wl-space-5:  24px;
+  --wl-space-6:  32px;
+  --wl-space-7:  48px;
+  --wl-space-8:  64px;
+  --wl-space-9:  96px;
+  --wl-space-10: 128px;
+
+  /* ---------- Brand shapes ---------- */
+  /* Measured from the guide: ~98pt module, ~20pt gap, ~15pt radius.
+     One radius for every shape, photo and card in a composition. */
+  --wl-shape-module: 96px;
+  --wl-shape-gap:    20px;
+  --wl-radius:       16px;
+  --wl-radius-pill:  999px;
+
+  /* ---------- Iconography ---------- */
+  --wl-icon-sm: 24px;
+  --wl-icon-md: 48px;
+  --wl-icon-lg: 64px;
+
+  /* ---------- Logo ---------- */
+  --wl-logo-min-width: 100px;  /* digital minimum */
+}
+
+/* =====================================================================
+   Base
+   ===================================================================== */
+
+.wl, .wl *, .wl *::before, .wl *::after { box-sizing: border-box; }
+
+.wl {
+  font-family: var(--wl-font);
+  font-size: var(--wl-size-body);
+  line-height: var(--wl-leading-body);
+  color: var(--wl-text);
+  background: var(--wl-surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =====================================================================
+   Type styles — names match the brand guide hierarchy
+   ===================================================================== */
+
+.wl-eyebrow {
+  font-size: var(--wl-size-eyebrow);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.4;
+  letter-spacing: var(--wl-tracking-caps);
+  text-transform: uppercase;
+}
+
+.wl-headline {
+  font-size: var(--wl-size-headline);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-headline);
+  letter-spacing: var(--wl-tracking-headline);
+  text-wrap: balance;
+}
+
+.wl-subhead {
+  font-size: var(--wl-size-subhead);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-subhead);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.wl-h3 {
+  font-size: var(--wl-size-h3);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.4;
+}
+
+.wl-body {
+  font-size: var(--wl-size-body);
+  font-weight: var(--wl-weight-regular);
+  line-height: var(--wl-leading-body);
+  max-width: var(--wl-measure);
+}
+
+.wl-body-sm {
+  font-size: var(--wl-size-small);
+  font-weight: var(--wl-weight-regular);
+  line-height: var(--wl-leading-small);
+}
+
+.wl-callout {
+  font-size: var(--wl-size-callout);
+  font-weight: var(--wl-weight-medium);
+  line-height: var(--wl-leading-callout);
+  max-width: 52ch;
+}
+
+/* Bold lead-in / summary line (seen in guide's scale examples) */
+.wl-lead {
+  font-size: var(--wl-size-body);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.75;
+  max-width: var(--wl-measure);
+}
+
+/* =====================================================================
+   Heading levels — semantic elements mapped to the brand hierarchy
+   h1 = Headline · h2 = Subhead · h3 = H3 heading or label
+   :where() keeps specificity at zero-class level, so any .wl-* class
+   on a heading still wins. Use .wl-h1/.wl-h2 to get the look on a
+   different element (e.g. a visually large h2 on a cover section).
+   ===================================================================== */
+
+:where(.wl) h1, .wl-h1 {
+  font-size: var(--wl-size-headline);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-headline);
+  letter-spacing: var(--wl-tracking-headline);
+  text-wrap: balance;
+}
+
+:where(.wl) h2, .wl-h2 {
+  font-size: var(--wl-size-subhead);
+  font-weight: var(--wl-weight-semibold);
+  line-height: var(--wl-leading-subhead);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+:where(.wl) h3 {
+  font-size: var(--wl-size-h3);
+  font-weight: var(--wl-weight-semibold);
+  line-height: 1.4;
+}
+
+/* Margins live in zero-specificity rules so the flow rules below
+   always apply and any layout class can override them. */
+:where(.wl) :where(h1, h2, h3, h4, p, .wl-eyebrow, .wl-headline, .wl-subhead,
+  .wl-h1, .wl-h2, .wl-h3, .wl-body, .wl-body-sm, .wl-callout, .wl-lead) { margin: 0; }
+
+/* Space after each heading level in running content */
+:where(.wl) :where(h1, .wl-h1) + * { margin-top: var(--wl-space-5); }  /* 24px */
+:where(.wl) :where(h2, .wl-h2) + * { margin-top: var(--wl-space-4); }  /* 16px */
+:where(.wl) :where(h3, .wl-h3) + * { margin-top: var(--wl-space-1); }  /* 4px  */
+
+/* Space before a heading that follows content */
+:where(.wl) :where(p, ul, ol, figure, table, blockquote) + :where(h2, .wl-h2) { margin-top: var(--wl-space-7); } /* 48px */
+:where(.wl) :where(p, ul, ol, figure, table, blockquote) + :where(h3, .wl-h3) { margin-top: var(--wl-space-6); } /* 32px */
+:where(.wl) p + p { margin-top: var(--wl-space-4); }
+
+/* An eyebrow sits tight above its heading */
+:where(.wl) .wl-eyebrow + :where(h1, h2, .wl-h1, .wl-h2, .wl-headline, .wl-subhead) { margin-top: var(--wl-space-3); }
+
+/* Emphasized words in a headline. Large text only (orange on beige = 3.06:1). */
+.wl-em { color: var(--wl-emphasis); font-style: normal; }
+
+/* =====================================================================
+   Surfaces — each sets the correct text + emphasis + icon color
+   ===================================================================== */
+
+.wl-surface-white        { background: var(--wl-white);          --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-beige-light  { background: var(--wl-beige-light);    --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-beige        { background: var(--wl-beige);          --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-gray         { background: var(--wl-gray-lightest);  --wl-on: var(--wl-black); --wl-em-color: var(--wl-orange); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-yellow-light { background: var(--wl-yellow-light);   --wl-on: var(--wl-black); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-pink         { background: var(--wl-pink);           --wl-on: var(--wl-black); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-blue-light   { background: var(--wl-blue-light);     --wl-on: var(--wl-black); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+
+.wl-surface-orange       { background: var(--wl-orange);         --wl-on: var(--wl-black); --wl-em-color: var(--wl-white); --wl-icon-color: var(--wl-black); color: var(--wl-on); }
+.wl-surface-amber        { background: var(--wl-amber);          --wl-on: var(--wl-black); --wl-icon-color: var(--wl-black); color: var(--wl-on); }
+.wl-surface-yellow       { background: var(--wl-yellow);         --wl-on: var(--wl-black); --wl-icon-color: var(--wl-black); color: var(--wl-on); }
+
+.wl-surface-maroon       { background: var(--wl-maroon);         --wl-on: var(--wl-white); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-green-dark   { background: var(--wl-green-dark);     --wl-on: var(--wl-white); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+.wl-surface-blue-dark    { background: var(--wl-blue-dark);      --wl-on: var(--wl-white); --wl-icon-color: var(--wl-orange); color: var(--wl-on); }
+
+[class*="wl-surface-"] .wl-em { color: var(--wl-em-color, var(--wl-on)); }
+
+/* =====================================================================
+   Buttons & links
+   ===================================================================== */
+
+.wl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wl-space-2);
+  min-height: 44px;
+  padding: var(--wl-space-3) var(--wl-space-5);
+  border: 1.5px solid transparent;
+  border-radius: var(--wl-radius-pill);
+  font-family: var(--wl-font);
+  font-size: var(--wl-size-button);
+  font-weight: var(--wl-weight-extrabold);
+  letter-spacing: var(--wl-tracking-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.wl-btn--primary   { background: var(--wl-action); color: var(--wl-white); }
+.wl-btn--primary:hover { background: var(--wl-action-hover); }
+
+.wl-btn--secondary { background: transparent; color: var(--wl-action-hover); border-color: var(--wl-action); }
+.wl-btn--secondary:hover { background: var(--wl-action); color: var(--wl-white); }
+
+/* On orange backgrounds the guide calls for white buttons */
+.wl-btn--on-orange { background: var(--wl-white); color: var(--wl-black); }
+.wl-btn--on-orange:hover { background: var(--wl-beige-light); }
+
+/* Standalone text link (caps + arrow), e.g. "Read the report" */
+.wl-link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wl-space-2);
+  font-size: var(--wl-size-button);
+  font-weight: var(--wl-weight-extrabold);
+  letter-spacing: var(--wl-tracking-caps);
+  text-transform: uppercase;
+  color: var(--wl-action-hover);
+  text-decoration: none;
+}
+.wl-link-cta::after { content: "\2192"; font-weight: var(--wl-weight-regular); font-size: 1.25em; transition: transform .15s ease; }
+.wl-link-cta:hover::after { transform: translateX(3px); }
+
+/* Inline link inside body copy */
+.wl-link {
+  color: var(--wl-action-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.wl-link:hover { text-decoration-thickness: 2px; }
+
+.wl-btn:focus-visible,
+.wl-link:focus-visible,
+.wl-link-cta:focus-visible {
+  outline: 2px solid var(--wl-focus-ring);
+  outline-offset: 3px;
+}
+
+/* =====================================================================
+   Brand shapes, cards, photos
+   ===================================================================== */
+
+.wl-shape {
+  border-radius: var(--wl-radius);
+  background: var(--wl-shape-color, var(--wl-orange));
+  overflow: hidden;
+}
+
+/* A collection of shapes on an even grid */
+.wl-shape-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--wl-cols, 4), var(--wl-shape-module));
+  grid-auto-rows: var(--wl-shape-module);
+  gap: var(--wl-shape-gap);
+}
+
+.wl-card {
+  border-radius: var(--wl-radius);
+  padding: var(--wl-space-5);
+}
+
+.wl-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--wl-radius);
+  object-fit: cover;
+}
+
+/* Color overlay on a photo: wrap the <img> */
+.wl-photo-overlay { position: relative; border-radius: var(--wl-radius); overflow: hidden; }
+.wl-photo-overlay::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--wl-overlay-color, var(--wl-orange));
+  opacity: var(--wl-overlay-opacity);
+  pointer-events: none;
+}
+
+/* =====================================================================
+   Pattern (background texture) — simple rounded-square grid
+   ===================================================================== */
+
+.wl-pattern { position: relative; isolation: isolate; }
+.wl-pattern::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  opacity: var(--wl-pattern-opacity);
+  background-color: var(--wl-pattern-color, var(--wl-yellow));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect x='0' y='0' width='22' height='22' rx='4' fill='black'/%3E%3C/svg%3E") repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Crect x='0' y='0' width='22' height='22' rx='4' fill='black'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+/* =====================================================================
+   Icons (thin-line, rounded — flaticon.com style)
+   Use stroke="currentColor" in the SVG.
+   ===================================================================== */
+
+.wl-icon    { width: var(--wl-icon-md); height: var(--wl-icon-md); color: var(--wl-icon-color, var(--wl-orange)); flex: none; }
+.wl-icon-sm { width: var(--wl-icon-sm); height: var(--wl-icon-sm); }
+.wl-icon-lg { width: var(--wl-icon-lg); height: var(--wl-icon-lg); }
+
+/* =====================================================================
+   Logo
+   ===================================================================== */
+
+.wl-logo { display: block; min-width: var(--wl-logo-min-width); height: auto; }
+.wl-logo--mono .we,
+.wl-logo--mono .learn { fill: currentColor; } /* all-white / all-black version */
+
+@media (prefers-reduced-motion: reduce) {
+  .wl * { transition: none !important; }
+}
