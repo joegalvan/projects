@@ -3,6 +3,16 @@
 Learning Strategy Benchmarking Data Report, Second Edition (August 2026).
 A finished, production-ready page for WeLearnLS.com (WordPress). **Place `index-production.html` on the site as it is. Don't rebuild it in Elementor.**
 
+**Page URL (approved):** `https://welearnls.com/research/learning-strategy-benchmark-2026-08/`
+**Launch:** early preview Wednesday, Oct 28, 2026 (the page goes live); public launch Friday, Oct 30, 2026. Dates depend on delivery of the final PDF.
+
+## What changed in v1.1.5 (Oct 26)
+
+- The page URL is the approved one above, in every canonical, share, citation, Dublin Core and structured-data tag (it was a placeholder under `/ebook/`).
+- Launch date `2026-10-28` is in `article:published_time`, `article:modified_time` and the WebPage `datePublished` / `dateModified` (it was `YYYY-MM-DD`).
+- Ben Sieke stays: the "shown for review" note on his contributor card is gone.
+- The one-page-per-edition URL standard is approved (see "URLs and the Research category" below).
+
 ## What's here
 
 - `index-production.html`: the clean, production-ready report (no review notes or review toggle). Its version and build time are in a comment and a `version` meta tag at the top of the file.
@@ -27,12 +37,23 @@ The report is one self-contained page: markup, CSS and JavaScript are all in `in
 
 ## Before launch
 
-1. **Config.** Edit `WL_CONFIG` at the top of the script: PDF URL, HubSpot form IDs, scheduler URL. (index-production.html already has the review notes and toggle removed.)
-2. **Review highlights (index-review.html only).** Anything not word-for-word from the Word doc carries a `data-review` note: added visuals, PDF-only content, new UI copy, copy checks. Review mode is on by default in the prototype. Add `?review=0` to the URL to hide it. Decide on each item, then delete the attribute.
-3. **Placeholders.** The three "Learn more about" page URLs carry `data-todo`. (LinkedIn URLs are in place.)
-4. **Ben Sieke.** He's shown in the contributors list for review. An HTML comment marks his list item; delete it to remove him at launch, and remove his Person entry and `contributor` reference from the structured data.
-5. **Launch date.** Replace every `YYYY-MM-DD` with the launch date: `article:published_time`, `article:modified_time`, and the WebPage `datePublished` / `dateModified` in the structured data. The edition date (August 2026) stays on the Report, citation and Dublin Core tags.
-6. **Page URL.** The canonical link, share tags and structured data use the placeholder `https://welearnls.com/ebook/learning-strategy-benchmarking-data-report-2026/`. Update all occurrences, and point the `og:image` at the uploaded media URL.
+Done in v1.1.5: the page URL, the launch date (2026-10-28) and the Ben Sieke decision (he stays). Still to do at launch:
+
+1. **Final PDF.** When the creative vendor delivers it, upload it as `learning-strategy-benchmark-2026-08.pdf` and put its full URL in `WL_CONFIG.pdfUrl` at the top of the script, `citation_pdf_url`, the `alternate` PDF link in the head, and the Report's `associatedMedia.contentUrl` in the structured data. All four still point to the old placeholder path under `/wp-content/uploads/2025/12/`.
+2. **Share image.** Upload `assets/img/share-1200x630.jpg` and point `og:image`, `twitter:image` and the structured-data `image` / `primaryImageOfPage` at its full URL. They currently assume the `assets` folder sits under the page URL.
+3. **"Learn more" links.** The three "Learn more about" page URLs (Learning strategy services, AI enablement services, FRAME™ measurement method) carry `data-todo` and still point to the home page. WeLearn will supply them. (LinkedIn URLs are in place.)
+4. **Tracking.** The file doesn't include the GA4 or HubSpot tracking code: install both on the page. The report already pushes its events to `window.dataLayer` (see "Analytics"); add GTM triggers for the `wl_report_` events.
+5. **Research category and path.** See "URLs and the Research category" below.
+6. **If the launch date moves,** update `2026-10-28` in the four page-date fields listed above. The edition date (August 2026) stays on the Report, citation and Dublin Core tags.
+7. **Review highlights (index-review.html only).** Anything not word-for-word from the Word doc carries a `data-review` note. `index-production.html` already has the review notes and toggle removed.
+
+## URLs and the Research category (approved)
+
+- **Research category.** Add a "Research" category to the existing Knowledge Hub, alongside ebooks, blogs, event recordings, templates and tools, with its own filter link following the existing pattern: `welearnls.com/knowledge-hub/?e-filter-666fcd7-category=research`. List this edition there at the public launch (Oct 30), and the First Edition (January 2026, PDF) too.
+- **`/research/` path.** Interactive reports get their own permalink base, `/research/<slug>/`, mirroring the existing `/ebook/<slug>/` pattern.
+- **One page per edition, dated.** This edition: `/research/learning-strategy-benchmark-2026-08/`. The Third Edition will be `/research/learning-strategy-benchmark-2027-02/`. An edition's URL never changes after launch.
+- **Matching PDF names.** `learning-strategy-benchmark-2026-08.pdf`, so the page, the PDF and citations carry the same edition label.
+- **Promotion.** Launch campaigns link to the edition page; always-on links point to the Research filter.
 
 ## HubSpot
 
@@ -47,7 +68,7 @@ The report is one self-contained page: markup, CSS and JavaScript are all in `in
 
 ## Future editions
 
-The report is published every six months; the Third Edition is scheduled for February 27. When a new edition launches, update the edition line, the Report `version` and `datePublished`, the citation and Dublin Core dates, and the page dates. Recommended (10/14, pending team sign-off): one page per edition, so each edition keeps its own links, citations and search history; each new edition links back to the previous one.
+The report is published every six months; the Third Edition is scheduled for February 27. When a new edition launches, update the edition line, the Report `version` and `datePublished`, the citation and Dublin Core dates, and the page dates. Approved (10/26): one page per edition, so each edition keeps its own links, citations and search history. Each edition is canonical to itself; the new edition links back to the previous one, and older editions get a short banner pointing to the newest.
 
 ## SEO, AEO and sharing (drafts for WeLearn to edit)
 
