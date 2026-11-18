@@ -42,7 +42,7 @@ code{font-family:var(--mono);font-size:13px}
 @media (max-width:560px){.summary__list{grid-template-columns:1fr}}
 .n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#1d1d1f;color:#fff;font-size:11px;font-weight:700;line-height:1;flex:none}
 .n--muted{background:#d9d9de;color:#55555a}
-body.hide-notes .summary,body.hide-notes .hint,body.hide-notes .markup,body.hide-notes .note{display:none}
+body.hide-notes .summary,body.hide-notes .hint,body.hide-notes .notes{display:none}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1.5px solid transparent;background:var(--purple);color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
@@ -89,10 +89,21 @@ body.hide-notes .summary,body.hide-notes .hint,body.hide-notes .markup,body.hide
 .card .from{font-size:13px;color:#6e6e73;border-top:1px solid #ececec;padding-top:10px;margin-top:auto}
 .inv__sub{margin-top:40px}
 .card .from b{color:var(--black);font-weight:600}
+.notes .gh{margin:12px 0 0;color:#55555a;max-width:72ch}
+.notes .gh a{color:#7A41ED;font-weight:600;text-underline-offset:3px}
+.notes .markup{margin-top:32px;row-gap:40px}
 .markup{margin-top:40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
 .markup > div{min-width:0}
 .markup h3{font-size:16px;font-weight:600;margin-bottom:8px}
 .markup p{font-size:14px;color:var(--charcoal);margin:0 0 12px}
+.sched-t{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid #e6e6e6;border-radius:10px;overflow:hidden}
+.sched-t th,.sched-t td{text-align:left;padding:10px 14px;border-bottom:1px solid #ececec;vertical-align:top}
+.sched-t th{font-size:12px;font-weight:600;color:#55555a;background:#f5f5f7}
+.sched-t td:last-child{font-family:var(--mono);font-size:12px;word-break:break-all}
+.sched-t tr:last-child td{border-bottom:0}
+.markup .full{grid-column:1/-1}
+.topic-t td:first-child{font-family:var(--mono);font-size:12px}
+.topic-t td:last-child{font-family:inherit;font-size:13px;word-break:normal}
 pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6}
 .note{font-size:13px;color:#6e6e73;margin-top:32px;padding-top:16px;border-top:1px solid #ececec}
 .inv{background:#fbfbfb;border-top:1px solid #e6e6e6}
@@ -177,8 +188,6 @@ pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18
     <ol class="summary__list">
       <li><span class="n">1</span><div><strong>Pick a page, click a CTA</strong><span>Switch pages with the tabs. Every purple CTA on each page opens the modal, so visitors stay on the page.</span></div></li>
       <li><span class="n">2</span><div><strong>Form topics open on "Send a message"</strong><span>The topic dropdown is already set to match the button. Visitors can change it.</span></div></li>
-      <li><span class="n">3</span><div><strong>Booking topics open on "Book a time"</strong><span>FOAP "Book a call" and "Get a recommendation" open the scheduler first.</span></div></li>
-      <li><span class="n n--muted">–</span><div><strong>Form and calendar are stand-ins</strong><span>On the site, HubSpot's real form and scheduler load inside this same modal.</span></div></li>
     </ol>
   </div></div>
 </div>
@@ -192,18 +201,63 @@ pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18
     <div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span id="url">welearnls.com</span></div>
     <div class="page" id="page"></div>
   </div>
-  <p class="hint">Button labels and sections match the live pages. Phase 2 buttons from the outline doc are marked in the inventory below.</p>
 </div></section>
 
 <section class="inv" aria-labelledby="inv-title"><div class="wrap">
-  <h2 id="inv-title">All 9 topics</h2>
-  <p>Locked copy (Nov 18). Each card opens the modal exactly as that topic's buttons would.</p>
+  <h2 id="inv-title">All Phase 2 CTAs, for reference</h2>
+  <p>Click a CTA below to open its custom form and modal window. Adding <code>?topic=</code> and the topic name to a button's link loads the form with that topic pre-selected.</p>
   <div class="cards" id="cards"></div>
-  <h2 class="inv__sub">Button blurbs</h2>
-  <p>Same topic and form. These buttons add <code>&amp;v=</code> to their link and swap only the header (and for Workforce, the message prompt and thank-you).</p>
-  <div class="cards" id="vcards"></div>
 
+</div></section>
+
+<section class="inv notes" aria-labelledby="notes-title"><div class="wrap">
+  <h2 id="notes-title">Additional notes</h2>
+  <p class="gh">All handoff files, including the production code, the copy doc and the developer guide, are on GitHub: <a href="https://github.com/joegalvan/projects/tree/main/wln/phase%202%20CTA%20modals" target="_blank" rel="noopener">phase 2 CTA modals folder</a> · <a href="https://github.com/joegalvan/projects/blob/main/wln/phase%202%20CTA%20modals/README.md" target="_blank" rel="noopener">README (developer guide)</a></p>
   <div class="markup">
+    <div class="full">
+      <h3>Topic values</h3>
+      <p>Use these after <code>?topic=</code> in a button's link, for example <code>/contact-us/?topic=frame</code>. They match the internal values of the HubSpot property "CTA discussion topic" (<code>cta_discussion_topic</code>).</p>
+      <table class="sched-t topic-t">
+        <thead><tr><th>Topic value</th><th>Dropdown label</th><th>Opens on</th></tr></thead>
+        <tbody>
+          <tr><td>general</td><td>General question</td><td>Send a message</td></tr>
+          <tr><td>project</td><td>An L&amp;D project</td><td>Send a message</td></tr>
+          <tr><td>maturity-assessment</td><td>Strategy Maturity Assessment</td><td>Send a message</td></tr>
+          <tr><td>alignment-sprint</td><td>Alignment Sprint coaching</td><td>Send a message</td></tr>
+          <tr><td>learning-strategy</td><td>Learning strategy (SOAP or Strategy Workshop)</td><td>Send a message</td></tr>
+          <tr><td>ai-enablement</td><td>AI Enablement</td><td>Send a message</td></tr>
+          <tr><td>measurement</td><td>Learning Measurement</td><td>Send a message</td></tr>
+          <tr><td>frame</td><td>FRAME™ / FOAP call</td><td>Book a time</td></tr>
+          <tr><td>recommendation</td><td>Help choosing where to start</td><td>Book a time</td></tr>
+          <tr><td>other</td><td>Something else</td><td>Dropdown only, no button</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>HubSpot form embed</h3>
+      <p>One new form for every topic (a clone of the site contact form). The modal loads it the first time a visitor opens "Send a message".</p>
+      <pre>&lt;script
+  src="https://js.hsforms.net/forms/embed/developer/8668897.js"
+  defer&gt;&lt;/script&gt;
+
+&lt;div class="hs-form-html"
+     data-region="na1"
+     data-form-id="1ff52ef3-d343-4293-b050-9ea9a3527a30"
+     data-portal-id="8668897"&gt;&lt;/div&gt;</pre>
+    </div>
+    <div>
+      <h3>Scheduler links</h3>
+      <p>"Book a time" loads the scheduler for the button's topic. Strategy, AI and FRAME™ are round robin.</p>
+      <table class="sched-t">
+        <thead><tr><th>Topics</th><th>Scheduler</th></tr></thead>
+        <tbody>
+          <tr><td>general, project, recommendation</td><td>meetings.hubspot.com/seans5/sean-s-scheduling-page-</td></tr>
+          <tr><td>maturity-assessment, alignment-sprint, learning-strategy</td><td>meetings.hubspot.com/seans5/strategy-journey-meeting</td></tr>
+          <tr><td>ai-enablement</td><td>meetings.hubspot.com/seans5/ai-enablement-consultation-</td></tr>
+          <tr><td>measurement, frame</td><td>meetings.hubspot.com/seans5/foap-scheduler-</td></tr>
+        </tbody>
+      </table>
+    </div>
     <div>
       <h3>What a button needs in Elementor</h3>
       <p>A class and a link, set in the button's Link and Advanced settings. With JavaScript off, the link still goes to the contact page.</p>
@@ -211,11 +265,10 @@ pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18
     </div>
     <div>
       <h3>What gets sent to HubSpot</h3>
-      <p>One form for every topic. The button sets the topic and fills the hidden CTA label field. Notifications go to Sean Stowers for now.</p>
+      <p>One form for every topic. The button sets the topic and fills the hidden CTA label field. Notifications go to the HubSpot contact owner.</p>
       <pre id="hsmarkup"></pre>
     </div>
   </div>
-  <p class="note">Built from the interactive report's Let's talk dialog (native dialog, focus kept inside, Esc and backdrop close, focus returns to the button). Schedulers: General (meetings.hubspot.com/seans5/sean-s-scheduling-page-), Strategy / Journey (meetings.hubspot.com/seans5/strategy-journey-meeting), FOAP / FRAME™ (meetings.hubspot.com/seans5/foap-scheduler-), AI enablement (meetings.hubspot.com/seans5/ai-enablement-consultation-). Strategy, FRAME and AI are round robin.</p>
 </div></section>
 
 <dialog class="wl-dialog" id="wl-talk" aria-labelledby="wl-talk-title">
@@ -483,7 +536,7 @@ pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18
   var cards=document.getElementById('cards'), vcards=document.getElementById('vcards');
   Object.keys(V).forEach(function(k){
     cards.appendChild(card(k,'',used[k]));
-    Object.keys(V[k].variants||{}).forEach(function(vk){vcards.appendChild(card(k,vk,used[k+'|'+vk]||(vk==='workforce'?['Workforce Development · Let\'s talk','Workforce Development · Discuss your needs']:null)));});
+    if(vcards)Object.keys(V[k].variants||{}).forEach(function(vk){vcards.appendChild(card(k,vk,used[k+'|'+vk]||(vk==='workforce'?['Workforce Development · Let\'s talk','Workforce Development · Discuss your needs']:null)));});
   });
 
   // ---- Modal ----
@@ -587,7 +640,7 @@ pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18
   // Dev markup panels
   function updateMarkup(topic,variant,label){
     document.getElementById('btnmarkup').textContent='<a class="elementor-button wl-modal-cta"\n   href="'+href(topic,variant)+'">\n  '+label+'\n</a>';
-    document.getElementById('hsmarkup').textContent='form:                  1ff52ef3-…-9ea9a3527a30\ncta_discussion_topic:  '+topic+'\ncta_label:             '+label+'\nmessage:               (visitor\'s text)\npage URL:              recorded by HubSpot\nnotify:                Sean Stowers';
+    document.getElementById('hsmarkup').textContent='form:                  1ff52ef3-…-9ea9a3527a30\ncta_discussion_topic:  '+topic+'\ncta_label:             '+label+'\nmessage:               (visitor\'s text)\npage URL:              recorded by HubSpot\nnotify:                HubSpot contact owner';
   }
   updateMarkup('ai-enablement','','Talk to us about AI enablement');
 })();
