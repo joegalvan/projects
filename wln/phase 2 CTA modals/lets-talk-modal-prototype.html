@@ -1,0 +1,594 @@
+<title>WeLearn Let's Talk Modal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: a working page strip on top (sample WeLearn pages with real buttons), the variant inventory below, one shared native dialog.
+   Brand is light-only by WeLearn standard, so one deliberate light palette. */
+:root{
+  color-scheme: light;
+  --orange:#EF5617; --amber:#F99930; --yellow:#FFC914; --beige:#F2F1DF; --beige-light:#F9F8F2;
+  --purple:#8754EF; --purple-deep:#7A41ED; --green-dark:#084337; --pink:#FFE6EB; --blue-light:#CFF9F9; --yellow-light:#FFEEBC;
+  --black:#000; --charcoal:#3A3F3E; --gray-dark:#798180; --gray-medium:#B2B7B6; --gray-light:#CDD0CF; --gray-lightest:#F1F1EE; --white:#fff;
+  --font:'Plus Jakarta Sans','Segoe UI',Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--black);font-family:var(--font);font-size:16px;line-height:1.6}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+@media (max-width:600px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+h1,h2,h3{text-wrap:balance;margin:0}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin:0 0 12px}
+code{font-family:var(--mono);font-size:13px}
+
+/* Review layer (neutral tool styling, outside WeLearn brand) */
+.review{background:#fbfbfb;color:#1d1d1f;border-bottom:1px solid #e6e6e6;font-size:14px}
+.review__bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:14px}
+.review__title{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;min-width:0;font-weight:600}
+.review__tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#1d1d1f;color:#fff;border-radius:4px;padding:3px 7px}
+.review__url{font-weight:400;color:#6e6e73;font-size:13px;overflow-wrap:anywhere}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#1d1d1f;cursor:pointer;user-select:none}
+.toggle input{width:18px;height:18px;accent-color:#1d1d1f;margin:0}
+.summary{border-top:1px solid #ececec}
+.summary .wrap{padding-block:20px 24px}
+.summary__lead{margin:0 0 16px;color:#6e6e73;font-size:13px}
+.summary__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:860px}
+.summary__list li{display:flex;align-items:flex-start;gap:10px;min-width:0;background:#fff;border:1px solid #e6e6e6;border-radius:10px;padding:14px}
+.summary__list strong{display:block;font-weight:600;line-height:1.35;margin-bottom:4px}
+.summary__list span:not(.n){display:block;color:#55555a;font-size:13px;line-height:1.5}
+@media (max-width:1000px){.summary__list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.summary__list{grid-template-columns:1fr}}
+.n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#1d1d1f;color:#fff;font-size:11px;font-weight:700;line-height:1;flex:none}
+.n--muted{background:#d9d9de;color:#55555a}
+body.hide-notes .summary,body.hide-notes .hint,body.hide-notes .markup,body.hide-notes .note{display:none}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1.5px solid transparent;background:var(--purple);color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.btn:hover{background:var(--purple-deep)}
+.btn--secondary{background:transparent;border-color:var(--purple);color:var(--purple-deep)}
+.btn--secondary:hover{background:var(--purple);color:#fff}
+.btn--sm{min-height:36px;padding:0 16px;font-size:11px}
+:focus-visible{outline:2px solid var(--purple-deep);outline-offset:3px}
+
+/* Page strip */
+.demo{background:#f3f3f5;padding-block:32px 48px}
+.pagetabs{display:flex;flex-wrap:wrap;gap:6px;padding:4px;border-radius:999px;background:var(--gray-lightest);width:max-content;max-width:100%}
+.pagetabs button{min-height:40px;padding:0 16px;border:0;border-radius:999px;background:transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:var(--black)}
+.pagetabs button[aria-selected="true"]{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.demo__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+.demo__head h2{font-size:26px;font-weight:600;line-height:1.2}
+.browser{background:#fff;border-radius:12px;border:1px solid #e0e0e0;box-shadow:0 8px 30px rgba(0,0,0,.06);overflow:hidden}
+.browser__bar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--gray-lightest);font-size:12px;color:var(--charcoal);font-family:var(--mono);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.browser__bar i{width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex:none}
+.page{padding:32px clamp(16px,4vw,40px) 40px;display:grid;gap:28px}
+.hero{max-width:720px}
+.addl{font-size:20px;line-height:1.3;font-weight:600;margin:12px 0 -12px;padding-top:24px;border-top:1px solid var(--gray-lightest)}
+.hero h3{font-size:clamp(28px,4vw,44px);line-height:1.08;font-weight:600;letter-spacing:-.015em}
+.hero p{color:var(--charcoal);margin:14px 0 20px;max-width:52ch;font-size:15px}
+.section{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 24px;align-items:center;padding:20px 24px;border-radius:var(--r);background:var(--beige-light)}
+.section h4{margin:0;font-size:17px;font-weight:600}
+.section p{margin:4px 0 0;font-size:14px;color:var(--charcoal)}
+.section .btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.hint{font-size:13px;color:#6e6e73;margin:12px 0 0}
+
+/* Inventory + markup */
+.inv{padding-block:48px}
+.inv h2{font-size:clamp(26px,3vw,34px);font-weight:600;line-height:1.18;letter-spacing:-.01em}
+.inv > .wrap > p{color:var(--charcoal);max-width:64ch;margin:12px 0 24px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:#fff;border:1px solid #e6e6e6;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card__top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.key{font-family:var(--mono);font-size:12px;background:#f1f1f3;color:#1d1d1f;padding:3px 8px;border-radius:6px}
+.mode{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.mode--form{background:#f1f1f3;color:#55555a}
+.mode--book{background:#1d1d1f;color:#fff}
+.card h3{font-size:17px;font-weight:600;line-height:1.3}
+.card p{margin:0;font-size:14px;color:#55555a}
+.card .from{font-size:13px;color:#6e6e73;border-top:1px solid #ececec;padding-top:10px;margin-top:auto}
+.inv__sub{margin-top:40px}
+.card .from b{color:var(--black);font-weight:600}
+.markup{margin-top:40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.markup > div{min-width:0}
+.markup h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.markup p{font-size:14px;color:var(--charcoal);margin:0 0 12px}
+pre{margin:0;background:#1d1d1f;color:#f5f5f7;border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6}
+.note{font-size:13px;color:#6e6e73;margin-top:32px;padding-top:16px;border-top:1px solid #ececec}
+.inv{background:#fbfbfb;border-top:1px solid #e6e6e6}
+.markup p{color:#55555a}
+
+/* ===== The shared modal (mirrors the report's #wl-talk dialog) ===== */
+.wl-dialog{border:0;padding:0;border-radius:20px;width:min(640px,calc(100vw - 32px));max-height:min(860px,calc(100dvh - 48px));background:#fff;color:#000;font-family:var(--font);box-shadow:0 30px 80px rgba(0,0,0,.3);overflow:hidden}
+.wl-dialog::backdrop{background:rgba(0,0,0,.55)}
+.wl-dialog[open]{display:flex;flex-direction:column;animation:wl-in .4s cubic-bezier(.2,.7,.2,1)}
+.wl-dialog.is-closing{animation:wl-out .25s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes wl-in{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes wl-out{to{opacity:0;transform:translateY(12px) scale(.98)}}
+.wl-dialog__head{padding:28px 24px 16px 32px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--gray-lightest)}
+.wl-dialog__head .eyebrow{color:var(--orange);margin-bottom:8px}
+.wl-dialog__head h2{font-size:30px;line-height:1.18;font-weight:600;letter-spacing:-.015em}
+.wl-dialog__head p{margin:8px 0 0;font-size:15px;color:var(--charcoal);max-width:48ch}
+.wl-dialog__close{width:44px;height:44px;flex-shrink:0;border-radius:999px;border:1px solid var(--gray-light);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000}
+.wl-dialog__close svg{width:20px;height:20px}
+.wl-dialog__body{padding:20px 32px 32px;overflow-y:auto;overscroll-behavior:contain}
+.wl-tabs{display:flex;gap:6px;padding:4px;border-radius:999px;background:var(--gray-lightest);margin:0 0 20px}
+.wl-tabs button{flex:1;min-height:44px;border:0;border-radius:999px;background:transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:#000}
+.wl-tabs button[aria-selected="true"]{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.wl-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.wl-form .full{grid-column:1/-1}
+.wl-form label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+.wl-form label span{color:var(--charcoal);font-weight:400}
+.wl-form input,.wl-form select,.wl-form textarea{width:100%;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--gray-medium);background:var(--beige-light);font:inherit;font-size:16px;color:#000}
+.wl-form select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:16px;padding-right:44px}
+.wl-form textarea{border-radius:16px;padding:14px 18px;min-height:96px;resize:vertical}
+.wl-form input:focus,.wl-form select:focus,.wl-form textarea:focus{outline:2px solid var(--purple-deep);outline-offset:2px}
+.wl-form .preset{font-size:12px;color:var(--charcoal);margin-top:6px}
+.wl-form .submit{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.wl-form .btn{min-height:52px;padding:0 28px}
+.hs-tag{font-size:12px;color:var(--charcoal);display:flex;gap:6px;align-items:center;margin:0 0 14px}
+.hs-tag::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--amber)}
+/* Scheduler placeholder */
+.sched{border:1px solid var(--gray-light);border-radius:var(--r);padding:20px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px}
+.sched h4{margin:0 0 10px;font-size:14px;font-weight:600}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px;font-variant-numeric:tabular-nums}
+.cal b{font-size:11px;font-weight:600;color:var(--charcoal)}
+.cal button{aspect-ratio:1;border:0;border-radius:999px;background:transparent;font:inherit;font-size:13px;cursor:pointer;color:#000;min-width:0}
+.cal button:disabled{color:var(--gray-medium);cursor:default}
+.cal button.avail{color:var(--purple-deep);font-weight:700;background:#F3EEFD}
+.cal button[aria-pressed="true"]{background:var(--purple);color:#fff}
+.times{display:grid;gap:8px}
+.times button{min-height:44px;border-radius:999px;border:1.5px solid var(--purple);background:#fff;color:var(--purple-deep);font:inherit;font-size:14px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
+.times button:hover{background:var(--purple);color:#fff}
+.sched__foot{font-size:13px;color:var(--charcoal);margin:14px 0 0}
+.sched__foot button{background:none;border:0;padding:0;font:inherit;color:var(--purple-deep);text-decoration:underline;cursor:pointer}
+/* Done */
+.wl-done h3{font-size:26px;line-height:1.2;font-weight:600}
+.wl-done p{margin:10px 0 0;color:var(--charcoal)}
+.wl-done .booked-when{font-weight:600;color:var(--black)}
+.wl-done__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.wl-done__actions .btn{min-height:52px;padding:0 28px}
+
+@media (max-width:720px){
+  .hero{grid-template-columns:1fr}
+  .section{grid-template-columns:1fr}
+  .section .btns{justify-content:flex-start}
+  .markup{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .wl-dialog{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:20px 20px 0 0;max-height:92dvh}
+  .wl-dialog__head{padding:20px 12px 12px 20px}
+  .wl-dialog__head h2{font-size:24px}
+  .wl-dialog__body{padding:16px 20px calc(28px + env(safe-area-inset-bottom,0px))}
+  .wl-form{grid-template-columns:1fr}
+  .wl-form .btn,.wl-done__actions .btn{width:100%}
+  .sched{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.wl-dialog[open],.wl-dialog.is-closing{animation:none}}
+</style>
+
+<div class="review">
+  <div class="wrap review__bar">
+    <div class="review__title"><span class="review__tag">Mockup</span><span>Let's talk modal · Phase 2 CTAs</span><span class="review__url">welearnls.com · 5 sample pages</span></div>
+    <label class="toggle" for="shownotes"><input type="checkbox" id="shownotes" checked> Show review notes</label>
+  </div>
+  <div class="summary"><div class="wrap">
+    <p class="summary__lead">Click any purple button on the sample pages below. The same modal opens, with its heading, copy, first tab and topic matched to the button.</p>
+    <ol class="summary__list">
+      <li><span class="n">1</span><div><strong>Pick a page, click a CTA</strong><span>Switch pages with the tabs. Every purple CTA on each page opens the modal, so visitors stay on the page.</span></div></li>
+      <li><span class="n">2</span><div><strong>Form topics open on "Send a message"</strong><span>The topic dropdown is already set to match the button. Visitors can change it.</span></div></li>
+      <li><span class="n">3</span><div><strong>Booking topics open on "Book a time"</strong><span>FOAP "Book a call" and "Get a recommendation" open the scheduler first.</span></div></li>
+      <li><span class="n n--muted">–</span><div><strong>Form and calendar are stand-ins</strong><span>On the site, HubSpot's real form and scheduler load inside this same modal.</span></div></li>
+    </ol>
+  </div></div>
+</div>
+
+<section class="demo" aria-labelledby="demo-title"><div class="wrap">
+  <div class="demo__head">
+    <h2 id="demo-title">Try it on a page</h2>
+    <div class="pagetabs" role="tablist" aria-label="Sample page" id="pagetabs"></div>
+  </div>
+  <div class="browser">
+    <div class="browser__bar" aria-hidden="true"><i></i><i></i><i></i><span id="url">welearnls.com</span></div>
+    <div class="page" id="page"></div>
+  </div>
+  <p class="hint">Button labels and sections match the live pages. Phase 2 buttons from the outline doc are marked in the inventory below.</p>
+</div></section>
+
+<section class="inv" aria-labelledby="inv-title"><div class="wrap">
+  <h2 id="inv-title">All 9 topics</h2>
+  <p>Locked copy (Nov 18). Each card opens the modal exactly as that topic's buttons would.</p>
+  <div class="cards" id="cards"></div>
+  <h2 class="inv__sub">Button blurbs</h2>
+  <p>Same topic and form. These buttons add <code>&amp;v=</code> to their link and swap only the header (and for Workforce, the message prompt and thank-you).</p>
+  <div class="cards" id="vcards"></div>
+
+  <div class="markup">
+    <div>
+      <h3>What a button needs in Elementor</h3>
+      <p>A class and a link, set in the button's Link and Advanced settings. With JavaScript off, the link still goes to the contact page.</p>
+      <pre id="btnmarkup"></pre>
+    </div>
+    <div>
+      <h3>What gets sent to HubSpot</h3>
+      <p>One form for every topic. The button sets the topic and fills the hidden CTA label field. Notifications go to Sean Stowers for now.</p>
+      <pre id="hsmarkup"></pre>
+    </div>
+  </div>
+  <p class="note">Built from the interactive report's Let's talk dialog (native dialog, focus kept inside, Esc and backdrop close, focus returns to the button). Schedulers: General (meetings.hubspot.com/seans5/sean-s-scheduling-page-), Strategy / Journey (meetings.hubspot.com/seans5/strategy-journey-meeting), FOAP / FRAME™ (meetings.hubspot.com/seans5/foap-scheduler-), AI enablement (meetings.hubspot.com/seans5/ai-enablement-consultation-). Strategy, FRAME and AI are round robin.</p>
+</div></section>
+
+<dialog class="wl-dialog" id="wl-talk" aria-labelledby="wl-talk-title">
+  <div class="wl-dialog__head">
+    <div>
+      <p class="eyebrow" id="m-eyebrow">Let's talk</p>
+      <h2 id="wl-talk-title">Let's talk</h2>
+      <p id="m-line"></p>
+    </div>
+    <button type="button" class="wl-dialog__close" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="wl-dialog__body">
+    <div class="wl-tabs" role="tablist" aria-label="How would you like to connect?">
+      <button type="button" role="tab" id="tab-msg" aria-controls="panel-msg" data-tab="msg">Send a message</button>
+      <button type="button" role="tab" id="tab-book" aria-controls="panel-book" data-tab="book">Book a time</button>
+    </div>
+
+    <div role="tabpanel" id="panel-msg" aria-labelledby="tab-msg">
+      <div data-state="form">
+        <p class="hs-tag">HubSpot form renders here</p>
+        <form class="wl-form" id="talkform" novalidate>
+          <div><label for="f-first">First name</label><input id="f-first" autocomplete="given-name" required></div>
+          <div><label for="f-last">Last name</label><input id="f-last" autocomplete="family-name" required></div>
+          <div class="full"><label for="f-email">Work email</label><input id="f-email" type="email" autocomplete="email" required></div>
+          <div class="full"><label for="f-company">Company</label><input id="f-company" autocomplete="organization" required></div>
+          <div class="full"><label for="f-topic">What would you like to talk about?</label><select id="f-topic"></select><p class="preset" id="f-preset"></p></div>
+          <div class="full"><label for="f-msg" id="f-msg-label">What's on your mind?</label><textarea id="f-msg"></textarea></div>
+          <div class="full submit"><button class="btn" type="submit" id="f-submit">Send message</button></div>
+        </form>
+      </div>
+      <div class="wl-done" data-state="done" hidden>
+        <h3 id="done-title" tabindex="-1"></h3>
+        <p id="done-copy"></p>
+        <div class="wl-done__actions" id="done-actions"></div>
+      </div>
+    </div>
+
+    <div role="tabpanel" id="panel-book" aria-labelledby="tab-book" hidden>
+      <div data-state="form">
+        <p class="hs-tag" id="sched-tag">HubSpot scheduler renders here</p>
+        <div class="sched">
+          <div>
+            <h4 id="cal-month"></h4>
+            <div class="cal" id="cal"></div>
+          </div>
+          <div>
+            <h4 id="times-day">Pick a day</h4>
+            <div class="times" id="times"></div>
+          </div>
+        </div>
+        <p class="sched__foot">Prefer to write? <button type="button" data-goto="msg">Send a message instead</button></p>
+      </div>
+      <div class="wl-done" data-state="done" hidden>
+        <h3 id="booked-title" tabindex="-1"></h3>
+        <p id="booked-when" class="booked-when"></p>
+        <p id="booked-line"></p>
+        <div class="wl-done__actions" id="booked-actions"></div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+  /* ===================== CONFIG (edit copy and links here) =====================
+     Copy is locked (Nov 18, 2026). Source: "WeLearn - Phase 2 Modal Copy.docx".
+     {name} in a heading becomes ", Firstname" when HubSpot gives a first name, or nothing.
+     mode: which tab opens first ("msg" = Send a message, "book" = Book a time).
+     sched: key into WL_TALK.schedulers.
+     A button can add &v=<variant> to swap only the listed lines for that button. */
+  var WL_TALK = {
+    hubspot: {
+      portalId: '8668897',
+      formId: '1ff52ef3-d343-4293-b050-9ea9a3527a30',
+      region: 'na1',
+      script: 'https://js.hsforms.net/forms/embed/developer/8668897.js',
+      topicField: 'cta_discussion_topic',   // contact property, dropdown
+      labelField: 'cta_label',              // hidden single-line text (confirmed Nov 18)
+      messageField: 'message'               // HubSpot default Message field
+    },
+    schedulers: {
+      general:  'https://meetings.hubspot.com/seans5/sean-s-scheduling-page-',
+      strategy: 'https://meetings.hubspot.com/seans5/strategy-journey-meeting',
+      ai:       'https://meetings.hubspot.com/seans5/ai-enablement-consultation-',
+      frame:    'https://meetings.hubspot.com/seans5/foap-scheduler-'
+    },
+    contactUrl: '/contact-us/',
+    text: {
+      tabMsg: 'Send a message', tabBook: 'Book a time', close: 'Close',
+      loadingForm: 'Loading the form…', loadingCal: 'Loading the calendar…',
+      error: "The form couldn't load. Please try again, or visit welearnls.com/contact-us.",
+      calFootPre: 'Prefer to write?', calFootLink: 'Send a message instead.',
+      back: 'Back to the page', bookNow: 'Book a time'
+    },
+    topics: {
+      'general': {
+        label: 'General question', mode: 'msg', sched: 'general',
+        eyebrow: "Let's talk", title: "Tell us what you're working on",
+        copy: "One course, a new program, or a strategy the business can get behind: start with a quick note. We'll listen first, then suggest where we can help.",
+        msgLabel: "What's on your mind?",
+        msgHint: "For example: We're launching a leadership program next quarter and need help with design and measurement.",
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We've got your note.", copy: "Someone from our team will reply as soon as possible. If it's easier to talk it through live, pick a time that suits you.", primary: { label: 'Book a time', goto: 'book' } }
+      },
+      'project': {
+        label: 'An L&D project', mode: 'msg', sched: 'general',
+        eyebrow: 'Your L&D project', title: "Let's talk about your project",
+        copy: "Strategy and roadmaps, custom content, learning journeys, or a new program. Tell us what you need and when, and we'll come back with questions, ideas, and a realistic next step.",
+        msgLabel: 'Tell us about the project',
+        msgHint: 'Who is it for, what should change, and when do you need it?',
+        submit: 'Send project details',
+        ty: { h: 'Thanks{name}. Your project is in good hands.', copy: "We'll review your details and reply as soon as possible with a few questions or a time to talk. In the meantime, see what we've built with other teams.", primary: { label: 'See our case studies', href: 'https://welearnls.com/knowledge-hub/?e-filter-666fcd7-category=case-study' } },
+        variants: {
+          'workforce': {
+            eyebrow: 'Workforce development', title: "Let's fill your critical roles",
+            copy: "Tell us which roles are hard to fill and where. We train candidates for your jobs and place them, and you only pay when they're hired and stay 30 days.",
+            msgLabel: 'Which roles do you need to fill?',
+            msgHint: 'Which roles, how many openings, and in which locations?',
+            ty: { copy: "We'll reply as soon as possible. Want to see it in action? Read how Mass General Brigham built a sustainable healthcare workforce pipeline.", primary: { label: 'See how they did it', href: 'https://welearnls.com/case-study/how-mass-general-brigham-built-a-sustainable-healthcare-workforce-pipeline-thats-ready-to-work/' } }
+          },
+          'pricing': {
+            title: "Let's scope your project",
+            copy: "We price every custom project by its scope, from a single course to multi-course programs. Share the basics and we'll follow up to scope it with you."
+          }
+        }
+      },
+      'maturity-assessment': {
+        label: 'Strategy Maturity Assessment', mode: 'msg', sched: 'strategy',
+        eyebrow: 'Strategy Maturity Assessment', title: 'See where L&D and the business line up',
+        copy: "In 3 to 5 weeks, we assess your L&D function across six areas and benchmark it against 250+ organizations. Tell us about your team and we'll walk you through how it works.",
+        msgLabel: 'Who would take part?',
+        msgHint: 'For example: Our 12-person L&D team plus four business stakeholders. We want a clear picture before budget season.',
+        submit: 'Request details',
+        ty: { h: "Thanks{name}. Let's get you a clear picture.", copy: "We'll reply as soon as possible to set up a short call about your team, timing, and who to include. In the meantime, see how 3M validated its global L&D function.", primary: { label: 'Read the 3M story', href: 'https://welearnls.com/case-study/how-3m-validated-a-global-ld-function-with-the-strategy-scorecard/' } }
+      },
+      'alignment-sprint': {
+        label: 'Alignment Sprint coaching', mode: 'msg', sched: 'strategy',
+        eyebrow: 'Alignment Sprint', title: 'Close the gaps that matter most',
+        copy: "The Alignment Sprint picks up where your assessment leaves off. Choose one area or all six, and we'll work hands-on with your team for two weeks per area, with proven templates and honest challenge.",
+        msgLabel: 'Which areas do you want to work on?',
+        msgHint: 'For example: Measurement and analytics, and learning governance.',
+        submit: 'Talk to us about coaching',
+        ty: { h: "Thanks{name}. Let's plan your sprint.", copy: "We'll reply as soon as possible to talk through your priorities. If you've had your assessment, keep your report handy for that first conversation.", primary: { label: 'Book a time', goto: 'book' } }
+      },
+      'learning-strategy': {
+        label: 'Learning strategy (SOAP or Strategy Workshop)', mode: 'msg', sched: 'strategy',
+        eyebrow: 'Learning strategy', title: 'Talk to us about your strategy',
+        copy: "Further along with your strategy? Tell us where it stands, and we'll help you choose between Strategy on a Page and a Strategy Workshop.",
+        msgLabel: 'Where does your strategy stand today?',
+        msgHint: "For example: We have a draft, but our stakeholders haven't agreed on it yet.",
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible. If you have a draft strategy or recent stakeholder data, have it handy. It helps us recommend the right next step.", primary: { label: 'Book a time', goto: 'book' } },
+        variants: {
+          'soap': {
+            eyebrow: 'Strategy on a Page', title: 'Get your strategy on one page',
+            copy: "SOAP sets out why your L&D function exists, the business focus areas, the initiatives under each, and how you'll measure success. We build it with your team and set up the governance to keep it on track."
+          },
+          'workshop': {
+            eyebrow: 'Strategy Workshop', title: 'Get everyone behind your draft',
+            copy: 'In two or five days, we facilitate your team and stakeholders through testing your draft strategy, refining it, and turning it into an action plan with owners and timelines.'
+          }
+        }
+      },
+      'ai-enablement': {
+        label: 'AI Enablement', mode: 'msg', sched: 'ai',
+        eyebrow: 'AI Enablement', title: 'Put AI to work in your team',
+        copy: "Is AI living up to its promise in your business? Let's discuss your needs. Send our team a message, or book a time below.",
+        msgLabel: 'Tell us about your team',
+        msgHint: 'How many people, which AI tools you use, and the work that takes longer than it should.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. Let's find your best use case.", copy: "We'll reply as soon as possible. While you wait, try our free AI use-case finder to see where AI could free up time in your team's work.", primary: { label: 'Find your best AI use case', href: 'https://welearnls.com/wp-content/uploads/2025/12/welearn-ai-use-case-finder-v2.html' } },
+        variants: {
+          'one-to-one': {
+            eyebrow: 'One-to-one AI coaching', title: 'AI coaching shaped around your role',
+            copy: "Six weeks of one-to-one coaching for senior leaders, partners, and anyone whose schedule won't fit a cohort. When leaders use AI visibly, adoption spreads.",
+            msgHint: 'Who would take part, and what does their week look like?'
+          }
+        }
+      },
+      'measurement': {
+        label: 'Learning Measurement', mode: 'msg', sched: 'frame',
+        eyebrow: 'Learning Measurement', title: 'Show what learning is worth',
+        copy: "Completions and satisfaction scores show what L&D did, not what the business got back. Tell us what you report today, and we'll show you how the FRAME™ method turns it into numbers leadership trusts.",
+        msgLabel: 'What do you report on today?',
+        msgHint: 'For example: Completions and satisfaction to our CHRO each quarter. Finance is asking for ROI.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible. Want to see the method first? Here's how FRAME™ works.", primary: { label: 'See how FRAME™ works', href: 'https://welearnls.com/frame/' } }
+      },
+      'frame': {
+        label: 'FRAME™ / FOAP call', mode: 'book', sched: 'frame',
+        eyebrow: 'FRAME™ method', title: 'What would your FOAP say?',
+        copy: "Book a short call. We'll show you how a Fiscal on a Page answers one question: for every $1 you invest in learning, what does the business get back?",
+        msgLabel: 'What would you like your FOAP to show?',
+        msgHint: 'For example: The return on our sales onboarding program.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible to find a time that works." },
+        booked: { h: "You're booked{name}.", copy: "Check your inbox for the calendar invite. To get the most from the call, bring one program you'd like to put a dollar value on." }
+      },
+      'recommendation': {
+        label: 'Help choosing where to start', mode: 'book', sched: 'general',
+        eyebrow: 'Get started', title: 'Not sure where to start?',
+        copy: "Book a short call. Tell us where your L&D function is today and what you want to change, and we'll suggest the right starting point, whether that's an assessment, AI coaching, or measurement.",
+        msgLabel: 'Where is your L&D function today?',
+        msgHint: 'For example: We have no documented strategy, and leadership wants to see AI results this year.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible with a suggested starting point, or a time to talk it through." },
+        booked: { h: "You're booked{name}.", copy: 'Check your inbox for the calendar invite. If you have ten minutes before we talk, the free Learning Strategy Scorecard gives us both a useful starting point.', primary: { label: 'Take the free scorecard', href: 'https://welearnls.com/learning-strategy-scorecard/' } }
+      }
+    },
+    // Dropdown option only (no modal of its own)
+    extraOptions: [['other', 'Something else']],
+    // Default "You're booked" state for topics without their own
+    booked: { h: "You're booked{name}.", copy: 'Check your inbox for the calendar invite.' }
+  };
+  /* =================== END CONFIG =================== */
+
+  var SCHED = WL_TALK.schedulers, V = WL_TALK.topics;
+  function cfgFor(topic,variant){var base=V[topic]||V.general, o=(base.variants&&base.variants[variant])||{}, r={}; for(var k in base)r[k]=base[k]; for(var k2 in o)if(k2!=='ty')r[k2]=o[k2]; r.ty={}; for(var t in base.ty)r.ty[t]=base.ty[t]; if(o.ty)for(var t2 in o.ty)r.ty[t2]=o.ty[t2]; return r;}
+  function nameIn(str,name){return str.replace('{name}',name?', '+name:'');}
+  // Sample pages: real labels from the live site. p2 = flagged Phase 2 in the outline doc.
+  var PAGES = [
+    {id:'what-we-do', name:'What we do', url:'welearnls.com/what-we-do/', eyebrow:'Services', h:'"Hey, we have this L&D project, and we\'re not sure how to handle it."', p:'Strategy, content, programs, workforce development. We\'re here for it!', heroBtn:["Let's talk",'general',1],
+      sections:[{h:'What we do',p:'Services & consulting, content & program development, workforce development.',btns:[['Discuss your needs','project',1]]}]},
+    {id:'maturity', name:'Maturity Assessment', url:'welearnls.com/how-we-help/learning-strategy-maturity-assessment/', eyebrow:'Learning Strategy Maturity Assessment', h:'Does the business see L&D the way you do?', p:'The Strategy Maturity Assessment for teams and stakeholders. See where alignment breaks down, and how to get back on track.', heroBtn:['Learn about the Maturity Assessment','maturity-assessment',1],
+      sections:[{h:'How we help',p:'Know where you stand, share the findings on your terms, get everyone on board.',btns:[['Discuss your needs','maturity-assessment',0]]},{h:'Coaching to close your maturity gaps',p:'The Alignment Sprint is an optional next step after your assessment.',btns:[['Talk to us about coaching','alignment-sprint',0]]}]},
+    {id:'ai', name:'AI Enablement', url:'welearnls.com/how-we-help/ai-enablement/', eyebrow:'AI Enablement', h:'Is AI living up to its promise in your business?', p:'We help your people embed AI in the work so they free up capacity, build capability, and your business sees the return.', heroBtn:['Talk to us about AI enablement','ai-enablement',1],
+      sections:[{h:'Human-first AI adoption',p:'Start with the work that matters. Make AI a daily habit.',btns:[['Discuss your needs','ai-enablement',0]]}]},
+    {id:'measurement', name:'Learning Measurement', url:'welearnls.com/how-we-help/learning-measurement/', eyebrow:'Learning Measurement', h:'No business ever funded a learning metric.', p:'Start reporting L&D in business and financial terms.', heroBtn:["Let's talk about measurement",'measurement',1],
+      sections:[{h:'How we help',p:'A FOAP, budget conversations backed by evidence, and the data partnerships behind your numbers.',btns:[['Discuss your needs','measurement',0]]},{h:'What would your FOAP say?',p:'For every $1 you invest in learning, what does the business get back?',btns:[['Book a call','frame',0]]}]},
+    {id:'pricing', name:'Pricing', url:'welearnls.com/pricing/', eyebrow:'Pricing', h:'What would it take to get started?', p:'Learning Strategy, AI Enablement and Learning Measurement pricing on one page.', heroBtn:['Book a call','recommendation',1],
+      sections:[{h:'Alignment Sprint',p:'Coaching to close your maturity gaps, two weeks per area.',btns:[['Talk to us about coaching','alignment-sprint',0]]},{h:'Strategy on a Page (SOAP)',p:'Your L&D strategy on one page, built with your team.',btns:[['Talk to us about your strategy','learning-strategy',0,'soap']]},{h:'Strategy Workshop',p:'Two or five days to test, refine and plan your draft strategy.',btns:[['Talk to us about your strategy','learning-strategy',0,'workshop']]},{h:'AI Enablement',p:'Cohorts of up to 15 people, or one-to-one coaching.',btns:[['Discuss one-to-one coaching','ai-enablement',0,'one-to-one']]},{h:'Content and program development',p:'We price every custom project by its scope.',btns:[['Discuss your project','project',0,'pricing']]},{h:'Not sure where to start?',p:'Tell us where your L&D function is today and what you want to change.',btns:[['Get a recommendation','recommendation',0]]}]}
+  ];
+  var SHAPES = [['--yellow','--green-dark','--amber','--orange'],['--green-dark','--yellow','--beige','--amber'],['--amber','--orange','--yellow','--beige']];
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function href(t,v){return '/contact-us/?topic='+t+(v?'&v='+v:'');}
+  function ctaHtml(b){return '<a class="btn wl-modal-cta" href="'+href(b[1],b[3])+'">'+esc(b[0])+'</a>';}
+
+  // ---- Page strip ----
+  var tabs=document.getElementById('pagetabs'), page=document.getElementById('page'), urlEl=document.getElementById('url');
+  PAGES.forEach(function(pg,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('role','tab'); b.textContent=pg.name; b.dataset.i=i;
+    b.addEventListener('click',function(){showPage(i);}); tabs.appendChild(b);
+  });
+  function showPage(i){
+    var pg=PAGES[i];
+    Array.prototype.forEach.call(tabs.children,function(t,j){t.setAttribute('aria-selected',String(j===i));});
+    urlEl.textContent=pg.url;
+    var html='<div class="hero"><p class="eyebrow">'+esc(pg.eyebrow)+'</p><h3>'+esc(pg.h)+'</h3><p>'+esc(pg.p)+'</p>'+ctaHtml(pg.heroBtn)+'</div>';
+    if(pg.sections.length) html+='<h2 class="addl">Additional CTAs on this page</h2>';
+    pg.sections.forEach(function(s){html+='<div class="section"><div><h4>'+esc(s.h)+'</h4><p>'+esc(s.p)+'</p></div><div class="btns">'+s.btns.map(ctaHtml).join('')+'</div></div>';});
+    page.innerHTML=html;
+  }
+  showPage(0);
+  document.getElementById('shownotes').addEventListener('change',function(){document.body.classList.toggle('hide-notes',!this.checked);});
+
+  // ---- Inventory cards ----
+  var used={}; PAGES.forEach(function(pg){[pg.heroBtn].concat([].concat.apply([],pg.sections.map(function(s){return s.btns;}))).forEach(function(b){var uk=b[1]+(b[3]?'|'+b[3]:''); (used[uk]=used[uk]||[]).push((b[2]?'<b>Phase 2:</b> ':'')+esc(pg.name)+' · '+esc(b[0]));});});
+  var cards=document.getElementById('cards');
+  function card(k,vk,where){
+    var v=cfgFor(k,vk), el=document.createElement('article'); el.className='card';
+    el.innerHTML='<div class="card__top"><span class="key">'+k+(vk?' · v='+vk:'')+'</span><span class="mode mode--'+(v.mode==='book'?'book':'form')+'">'+(v.mode==='book'?'Opens scheduler':'Opens form')+'</span></div><h3>'+esc(v.title)+'</h3><p>'+esc(v.copy)+'</p><div><a class="btn btn--sm btn--secondary wl-modal-cta" href="'+href(k,vk)+'">Open this modal</a></div><p class="from">'+(where||['Not on the sample pages']).join('<br>')+'</p>';
+    return el;
+  }
+  var cards=document.getElementById('cards'), vcards=document.getElementById('vcards');
+  Object.keys(V).forEach(function(k){
+    cards.appendChild(card(k,'',used[k]));
+    Object.keys(V[k].variants||{}).forEach(function(vk){vcards.appendChild(card(k,vk,used[k+'|'+vk]||(vk==='workforce'?['Workforce Development · Let\'s talk','Workforce Development · Discuss your needs']:null)));});
+  });
+
+  // ---- Modal ----
+  var d=document.getElementById('wl-talk'), opener=null, current='general';
+  var sel=document.getElementById('f-topic');
+  Object.keys(V).forEach(function(k){var o=document.createElement('option'); o.value=k; o.textContent=V[k].label; sel.appendChild(o);});
+  var other=document.createElement('option'); other.value='other'; other.textContent='Something else'; sel.appendChild(other);
+
+  function setState(panel,state){Array.prototype.forEach.call(panel.querySelectorAll('[data-state]'),function(n){n.hidden=n.dataset.state!==state;});}
+  function selectTab(which){
+    Array.prototype.forEach.call(d.querySelectorAll('[role=tab]'),function(t){var on=t.dataset.tab===which; t.setAttribute('aria-selected',String(on)); t.tabIndex=on?0:-1; document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});
+  }
+  var cur=null;
+  function setHead(id,txt){document.getElementById(id).textContent=txt;}
+  function open(topic,variant,label,el){
+    if(!(topic in V))topic='general';
+    var v=cfgFor(topic,variant); cur=v; current=topic; opener=el||document.activeElement;
+    setHead('m-eyebrow',v.eyebrow); setHead('wl-talk-title',v.title); setHead('m-line',v.copy);
+    setHead('f-submit',v.submit); setHead('f-msg-label',v.msgLabel);
+    document.getElementById('f-msg').placeholder=v.msgHint;
+    document.getElementById('f-preset').textContent='Pre-selected from the "'+label+'" button. Visitors can change it.';
+    document.getElementById('sched-tag').textContent='HubSpot scheduler renders here: '+SCHED[v.sched].replace('https://','');
+    var tl=d.querySelector('.wl-tabs'), first=document.getElementById(v.mode==='book'?'tab-book':'tab-msg'); tl.insertBefore(first,tl.firstChild);
+    setState(document.getElementById('panel-msg'),'form'); setState(document.getElementById('panel-book'),'form');
+    document.getElementById('talkform').reset(); sel.value=topic;
+    buildCal(); selectTab(v.mode);
+    updateMarkup(topic,variant,label);
+    d.showModal();
+  }
+  function actions(primary){
+    var h='';
+    if(primary&&primary.goto)h+='<button type="button" class="btn" data-goto="'+primary.goto+'">'+esc(primary.label)+'</button>';
+    else if(primary&&primary.href)h+='<a class="btn" href="'+primary.href+'" target="_blank" rel="noopener">'+esc(primary.label)+'</a>';
+    return h+'<button type="button" class="btn btn--secondary" data-close>Back to the page</button>';
+  }
+  function close(){
+    if(!d.open||d.classList.contains('is-closing'))return;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.close();return;}
+    d.classList.add('is-closing'); setTimeout(function(){d.classList.remove('is-closing'); d.close();},250);
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('.wl-modal-cta'); if(a){e.preventDefault(); var q=new URL(a.getAttribute('href'),location.href).searchParams; open(q.get('topic'),q.get('v')||'',a.textContent.trim(),a); return;}
+  });
+  d.addEventListener('click',function(e){
+    if(e.target===d||e.target.closest('[data-close]'))close();
+    var g=e.target.closest('[data-goto]'); if(g){selectTab(g.dataset.goto); var t=document.getElementById('tab-'+g.dataset.goto); if(t)t.focus();}
+    var tab=e.target.closest('[role=tab]'); if(tab)selectTab(tab.dataset.tab);
+  });
+  d.querySelector('.wl-tabs').addEventListener('keydown',function(e){
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+    var all=Array.prototype.slice.call(this.children), i=all.indexOf(document.activeElement); if(i<0)return;
+    var n=all[(i+(e.key==='ArrowRight'?1:all.length-1))%all.length]; selectTab(n.dataset.tab); n.focus();
+  });
+  d.addEventListener('cancel',function(e){e.preventDefault(); close();});
+  d.addEventListener('close',function(){if(opener&&opener.focus)opener.focus({preventScroll:true});});
+
+  document.getElementById('talkform').addEventListener('submit',function(e){
+    e.preventDefault();
+    var f=this, bad=Array.prototype.filter.call(f.querySelectorAll('[required]'),function(i){return !i.value.trim()||(i.type==='email'&&!/^\S+@\S+\.\S+$/.test(i.value));});
+    if(bad.length){bad[0].focus(); bad[0].setAttribute('aria-invalid','true'); return;}
+    var name=document.getElementById('f-first').value.trim();
+    var p=document.getElementById('panel-msg'); setState(p,'done');
+    var t=document.getElementById('done-title'); t.textContent=nameIn(cur.ty.h,name);
+    document.getElementById('done-copy').textContent=cur.ty.copy;
+    document.getElementById('done-actions').innerHTML=actions(cur.ty.primary); t.focus();
+  });
+
+  // Scheduler stand-in: next 4 weeks, weekdays available
+  function buildCal(){
+    var cal=document.getElementById('cal'), times=document.getElementById('times'); times.innerHTML=''; document.getElementById('times-day').textContent='Pick a day';
+    var now=new Date(), start=new Date(now.getFullYear(),now.getMonth(),1);
+    document.getElementById('cal-month').textContent=start.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+    var html='SMTWTFS'.split('').map(function(c){return '<b>'+c+'</b>';}).join('');
+    for(var i=0;i<start.getDay();i++)html+='<span></span>';
+    var days=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+    for(var dd=1;dd<=days;dd++){
+      var dt=new Date(now.getFullYear(),now.getMonth(),dd), wd=dt.getDay(), ok=dt>now&&wd>0&&wd<6;
+      html+='<button type="button" '+(ok?'class="avail" data-day="'+dd+'"':'disabled')+' aria-label="'+dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(ok?', available':', unavailable')+'">'+dd+'</button>';
+    }
+    cal.innerHTML=html;
+  }
+  document.getElementById('cal').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-day]'); if(!b)return;
+    Array.prototype.forEach.call(this.querySelectorAll('button'),function(x){x.removeAttribute('aria-pressed');}); b.setAttribute('aria-pressed','true');
+    var label=b.getAttribute('aria-label').replace(', available','');
+    document.getElementById('times-day').textContent=label;
+    document.getElementById('times').innerHTML=['9:00 AM','10:30 AM','1:00 PM','3:30 PM'].map(function(t){return '<button type="button" data-time="'+t+'">'+t+' CT</button>';}).join('');
+    document.getElementById('times').dataset.day=label;
+  });
+  document.getElementById('times').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-time]'); if(!b)return;
+    var p=document.getElementById('panel-book'); setState(p,'done');
+    var bk=cur.booked||WL_TALK.booked, nm=document.getElementById('f-first').value.trim();
+    document.getElementById('booked-title').textContent=nameIn(bk.h,nm);
+    document.getElementById('booked-when').textContent=this.dataset.day+' at '+b.dataset.time+' CT';
+    document.getElementById('booked-line').textContent=bk.copy;
+    document.getElementById('booked-actions').innerHTML=actions(bk.primary);
+    document.getElementById('booked-title').focus();
+  });
+
+  // Dev markup panels
+  function updateMarkup(topic,variant,label){
+    document.getElementById('btnmarkup').textContent='<a class="elementor-button wl-modal-cta"\n   href="'+href(topic,variant)+'">\n  '+label+'\n</a>';
+    document.getElementById('hsmarkup').textContent='form:                  1ff52ef3-…-9ea9a3527a30\ncta_discussion_topic:  '+topic+'\ncta_label:             '+label+'\nmessage:               (visitor\'s text)\npage URL:              recorded by HubSpot\nnotify:                Sean Stowers';
+  }
+  updateMarkup('ai-enablement','','Talk to us about AI enablement');
+})();
+</script>

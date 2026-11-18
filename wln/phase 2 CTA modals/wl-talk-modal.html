@@ -1,0 +1,447 @@
+<!--
+  WeLearn · "Let's talk" modal (Phase 2 CTAs)
+  Install: Elementor > Custom Code > Add New. Location: </body> - End. Display on: Entire Site. Priority: 1.
+  One modal and one HubSpot form for every purple CTA. See README.md for setup, CTA links and QA.
+  A button opts in with the CSS class wl-modal-cta and a link like /contact-us/?topic=project (optionally &v=workforce).
+  Without JavaScript, or on old browsers, the link still goes to the Contact us page.
+-->
+<style>
+.wl-talk{border:0;padding:0;border-radius:20px;width:min(720px,calc(100vw - 32px));max-height:min(880px,calc(100dvh - 48px));background:#fff;color:#000;font-family:'Plus Jakarta Sans','Segoe UI',Helvetica,Arial,sans-serif;box-shadow:0 30px 80px rgba(0,0,0,.3);overflow:hidden}
+.wl-talk::backdrop{background:rgba(0,0,0,.55)}
+html:has(.wl-talk[open]){overflow:hidden}
+.wl-talk[open]{display:flex;flex-direction:column;animation:wl-talk-in .45s cubic-bezier(.2,.7,.2,1)}
+.wl-talk[open]::backdrop{animation:wl-talk-fade .45s cubic-bezier(.2,.7,.2,1)}
+.wl-talk.is-closing{animation:wl-talk-out .3s cubic-bezier(.65,0,.35,1) forwards}
+.wl-talk.is-closing::backdrop{animation:wl-talk-fade .3s reverse forwards}
+@keyframes wl-talk-in{from{opacity:0;transform:translateY(16px)}}
+@keyframes wl-talk-out{to{opacity:0;transform:translateY(12px)}}
+@keyframes wl-talk-fade{from{opacity:0}}
+.wl-talk *{box-sizing:border-box}
+.wl-talk [hidden]{display:none!important}
+.wl-talk__head{padding:28px 28px 18px 32px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid #F1F1EE}
+.wl-talk__eyebrow{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#EF5617}
+.wl-talk__head h2{margin:0;font-size:34px;line-height:1.18;font-weight:600;letter-spacing:-.015em;color:#000}
+.wl-talk__copy{margin:10px 0 0;font-size:15px;line-height:1.55;color:#3A3F3E;max-width:520px}
+.wl-talk__close{width:44px;height:44px;flex-shrink:0;border-radius:999px;border:1px solid #CDD0CF;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;padding:0}
+.wl-talk__close svg{width:20px;height:20px}
+.wl-talk__body{padding:24px 32px 32px;overflow-y:auto;overscroll-behavior:contain;font-size:16px;line-height:1.6}
+.wl-talk__tabs{display:flex;gap:6px;padding:4px;border-radius:999px;background:#F1F1EE;margin:0 0 20px}
+.wl-talk__tabs button{flex:1;min-height:44px;border:0;border-radius:999px;background:transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:#000}
+.wl-talk__tabs button[aria-selected="true"]{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.wl-talk__loading{padding:32px 0;color:#3A3F3E;font-size:14px}
+.wl-talk__meet iframe{display:block;width:100%;min-height:640px;border:0}
+.wl-talk__foot{margin:16px 0 0;font-size:14px;color:#3A3F3E}
+.wl-talk__foot button{background:none;border:0;padding:0;font:inherit;color:#7A41ED;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.wl-talk__done h3{margin:0;font-size:26px;line-height:1.2;font-weight:600;color:#000}
+.wl-talk__done p{margin:10px 0 0;color:#3A3F3E}
+.wl-talk__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.wl-talk .wl-talk__btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;border:1.5px solid #8754EF;background:#8754EF;color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.wl-talk .wl-talk__btn:hover{background:#7A41ED;border-color:#7A41ED;color:#fff}
+.wl-talk .wl-talk__btn--secondary{background:transparent;color:#7A41ED}
+.wl-talk .wl-talk__btn--secondary:hover{background:#8754EF;color:#fff}
+.wl-talk :focus-visible{outline:2px solid #7A41ED;outline-offset:3px}
+/* HubSpot developer embed: fields render as page HTML, so the site styles them */
+.wl-talk .hs-form-html form,.wl-talk .hsfc-Form{display:flex;flex-direction:column;gap:14px}
+.wl-talk .hs-form-html label,.wl-talk .hsfc-FieldLabel{font-size:14px;font-weight:500;color:#000}
+.wl-talk .hs-form-html input[type=text],.wl-talk .hs-form-html input[type=email],.wl-talk .hs-form-html select,.wl-talk .hsfc-TextInput,.wl-talk .hsfc-DropdownInput input{width:100%;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid #B2B7B6;background:#F9F8F2;font:inherit;font-size:16px;color:#000}
+.wl-talk .hs-form-html textarea,.wl-talk .hsfc-TextareaInput{width:100%;min-height:120px;padding:14px 18px;border-radius:16px;border:1px solid #B2B7B6;background:#F9F8F2;font:inherit;font-size:16px;color:#000}
+.wl-talk .hs-form-html input:focus,.wl-talk .hs-form-html textarea:focus,.wl-talk .hs-form-html select:focus{outline:2px solid #7A41ED;outline-offset:2px}
+.wl-talk .hs-form-html button[type=submit],.wl-talk .hs-form-html input[type=submit],.wl-talk .hsfc-Button{min-height:52px;padding:0 28px;border-radius:999px;border:0;background:#8754EF;color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.wl-talk .hs-form-html button[type=submit]:hover,.wl-talk .hsfc-Button:hover{background:#7A41ED}
+@media (max-width:600px){
+  .wl-talk{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:20px 20px 0 0;max-height:92dvh}
+  .wl-talk__head{padding:20px 12px 14px 20px}
+  .wl-talk__head h2{font-size:24px}
+  .wl-talk__body{padding:16px 20px calc(28px + env(safe-area-inset-bottom,0px))}
+  .wl-talk .wl-talk__btn,.wl-talk .hsfc-Button{width:100%}
+}
+@media (prefers-reduced-motion:reduce){.wl-talk[open],.wl-talk.is-closing,.wl-talk[open]::backdrop{animation:none}}
+</style>
+
+<dialog class="wl-talk" id="wl-talk" aria-labelledby="wl-talk-title" aria-describedby="wl-talk-copy">
+  <div class="wl-talk__head">
+    <div>
+      <p class="wl-talk__eyebrow" data-f="eyebrow"></p>
+      <h2 id="wl-talk-title" data-f="title">Let's talk</h2>
+      <p class="wl-talk__copy" id="wl-talk-copy" data-f="copy"></p>
+    </div>
+    <button type="button" class="wl-talk__close" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="wl-talk__body">
+    <div class="wl-talk__tabs" role="tablist" aria-label="How would you like to connect?">
+      <button type="button" role="tab" id="wl-talk-tab-msg" aria-controls="wl-talk-panel-msg" data-tab="msg">Send a message</button>
+      <button type="button" role="tab" id="wl-talk-tab-book" aria-controls="wl-talk-panel-book" data-tab="book">Book a time</button>
+    </div>
+
+    <div role="tabpanel" id="wl-talk-panel-msg" aria-labelledby="wl-talk-tab-msg">
+      <div data-state="form">
+        <p class="wl-talk__loading" data-loading-form role="status">Loading the form…</p>
+        <div class="hs-form-html" data-region="na1" data-form-id="1ff52ef3-d343-4293-b050-9ea9a3527a30" data-portal-id="8668897"></div>
+      </div>
+      <div class="wl-talk__done" data-state="done" hidden>
+        <h3 tabindex="-1" data-done-h></h3>
+        <p data-done-copy></p>
+        <div class="wl-talk__actions" data-done-actions></div>
+      </div>
+    </div>
+
+    <div role="tabpanel" id="wl-talk-panel-book" aria-labelledby="wl-talk-tab-book" hidden>
+      <div data-state="form">
+        <p class="wl-talk__loading" data-loading-cal role="status">Loading the calendar…</p>
+        <div class="wl-talk__meet" data-meet></div>
+        <p class="wl-talk__foot">Prefer to write? <button type="button" data-goto="msg">Send a message instead.</button></p>
+      </div>
+      <div class="wl-talk__done" data-state="done" hidden>
+        <h3 tabindex="-1" data-done-h></h3>
+        <p data-done-copy></p>
+        <div class="wl-talk__actions" data-done-actions></div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+  /* ===================== CONFIG (edit copy and links here) =====================
+     Copy is locked (Nov 18, 2026). Source: "WeLearn - Phase 2 Modal Copy.docx".
+     {name} in a heading becomes ", Firstname" when HubSpot gives a first name, or nothing.
+     mode: which tab opens first ("msg" = Send a message, "book" = Book a time).
+     sched: key into WL_TALK.schedulers.
+     A button can add &v=<variant> to swap only the listed lines for that button. */
+  var WL_TALK = {
+    hubspot: {
+      portalId: '8668897',
+      formId: '1ff52ef3-d343-4293-b050-9ea9a3527a30',
+      region: 'na1',
+      script: 'https://js.hsforms.net/forms/embed/developer/8668897.js',
+      topicField: 'cta_discussion_topic',   // contact property, dropdown
+      labelField: 'cta_label',              // hidden single-line text (confirmed Nov 18)
+      messageField: 'message'               // HubSpot default Message field
+    },
+    schedulers: {
+      general:  'https://meetings.hubspot.com/seans5/sean-s-scheduling-page-',
+      strategy: 'https://meetings.hubspot.com/seans5/strategy-journey-meeting',
+      ai:       'https://meetings.hubspot.com/seans5/ai-enablement-consultation-',
+      frame:    'https://meetings.hubspot.com/seans5/foap-scheduler-'
+    },
+    contactUrl: '/contact-us/',
+    text: {
+      tabMsg: 'Send a message', tabBook: 'Book a time', close: 'Close',
+      loadingForm: 'Loading the form…', loadingCal: 'Loading the calendar…',
+      error: "The form couldn't load. Please try again, or visit welearnls.com/contact-us.",
+      calFootPre: 'Prefer to write?', calFootLink: 'Send a message instead.',
+      back: 'Back to the page', bookNow: 'Book a time'
+    },
+    topics: {
+      'general': {
+        label: 'General question', mode: 'msg', sched: 'general',
+        eyebrow: "Let's talk", title: "Tell us what you're working on",
+        copy: "One course, a new program, or a strategy the business can get behind: start with a quick note. We'll listen first, then suggest where we can help.",
+        msgLabel: "What's on your mind?",
+        msgHint: "For example: We're launching a leadership program next quarter and need help with design and measurement.",
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We've got your note.", copy: "Someone from our team will reply as soon as possible. If it's easier to talk it through live, pick a time that suits you.", primary: { label: 'Book a time', goto: 'book' } }
+      },
+      'project': {
+        label: 'An L&D project', mode: 'msg', sched: 'general',
+        eyebrow: 'Your L&D project', title: "Let's talk about your project",
+        copy: "Strategy and roadmaps, custom content, learning journeys, or a new program. Tell us what you need and when, and we'll come back with questions, ideas, and a realistic next step.",
+        msgLabel: 'Tell us about the project',
+        msgHint: 'Who is it for, what should change, and when do you need it?',
+        submit: 'Send project details',
+        ty: { h: 'Thanks{name}. Your project is in good hands.', copy: "We'll review your details and reply as soon as possible with a few questions or a time to talk. In the meantime, see what we've built with other teams.", primary: { label: 'See our case studies', href: 'https://welearnls.com/knowledge-hub/?e-filter-666fcd7-category=case-study' } },
+        variants: {
+          'workforce': {
+            eyebrow: 'Workforce development', title: "Let's fill your critical roles",
+            copy: "Tell us which roles are hard to fill and where. We train candidates for your jobs and place them, and you only pay when they're hired and stay 30 days.",
+            msgLabel: 'Which roles do you need to fill?',
+            msgHint: 'Which roles, how many openings, and in which locations?',
+            ty: { copy: "We'll reply as soon as possible. Want to see it in action? Read how Mass General Brigham built a sustainable healthcare workforce pipeline.", primary: { label: 'See how they did it', href: 'https://welearnls.com/case-study/how-mass-general-brigham-built-a-sustainable-healthcare-workforce-pipeline-thats-ready-to-work/' } }
+          },
+          'pricing': {
+            title: "Let's scope your project",
+            copy: "We price every custom project by its scope, from a single course to multi-course programs. Share the basics and we'll follow up to scope it with you."
+          }
+        }
+      },
+      'maturity-assessment': {
+        label: 'Strategy Maturity Assessment', mode: 'msg', sched: 'strategy',
+        eyebrow: 'Strategy Maturity Assessment', title: 'See where L&D and the business line up',
+        copy: "In 3 to 5 weeks, we assess your L&D function across six areas and benchmark it against 250+ organizations. Tell us about your team and we'll walk you through how it works.",
+        msgLabel: 'Who would take part?',
+        msgHint: 'For example: Our 12-person L&D team plus four business stakeholders. We want a clear picture before budget season.',
+        submit: 'Request details',
+        ty: { h: "Thanks{name}. Let's get you a clear picture.", copy: "We'll reply as soon as possible to set up a short call about your team, timing, and who to include. In the meantime, see how 3M validated its global L&D function.", primary: { label: 'Read the 3M story', href: 'https://welearnls.com/case-study/how-3m-validated-a-global-ld-function-with-the-strategy-scorecard/' } }
+      },
+      'alignment-sprint': {
+        label: 'Alignment Sprint coaching', mode: 'msg', sched: 'strategy',
+        eyebrow: 'Alignment Sprint', title: 'Close the gaps that matter most',
+        copy: "The Alignment Sprint picks up where your assessment leaves off. Choose one area or all six, and we'll work hands-on with your team for two weeks per area, with proven templates and honest challenge.",
+        msgLabel: 'Which areas do you want to work on?',
+        msgHint: 'For example: Measurement and analytics, and learning governance.',
+        submit: 'Talk to us about coaching',
+        ty: { h: "Thanks{name}. Let's plan your sprint.", copy: "We'll reply as soon as possible to talk through your priorities. If you've had your assessment, keep your report handy for that first conversation.", primary: { label: 'Book a time', goto: 'book' } }
+      },
+      'learning-strategy': {
+        label: 'Learning strategy (SOAP or Strategy Workshop)', mode: 'msg', sched: 'strategy',
+        eyebrow: 'Learning strategy', title: 'Talk to us about your strategy',
+        copy: "Further along with your strategy? Tell us where it stands, and we'll help you choose between Strategy on a Page and a Strategy Workshop.",
+        msgLabel: 'Where does your strategy stand today?',
+        msgHint: "For example: We have a draft, but our stakeholders haven't agreed on it yet.",
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible. If you have a draft strategy or recent stakeholder data, have it handy. It helps us recommend the right next step.", primary: { label: 'Book a time', goto: 'book' } },
+        variants: {
+          'soap': {
+            eyebrow: 'Strategy on a Page', title: 'Get your strategy on one page',
+            copy: "SOAP sets out why your L&D function exists, the business focus areas, the initiatives under each, and how you'll measure success. We build it with your team and set up the governance to keep it on track."
+          },
+          'workshop': {
+            eyebrow: 'Strategy Workshop', title: 'Get everyone behind your draft',
+            copy: 'In two or five days, we facilitate your team and stakeholders through testing your draft strategy, refining it, and turning it into an action plan with owners and timelines.'
+          }
+        }
+      },
+      'ai-enablement': {
+        label: 'AI Enablement', mode: 'msg', sched: 'ai',
+        eyebrow: 'AI Enablement', title: 'Put AI to work in your team',
+        copy: "Is AI living up to its promise in your business? Let's discuss your needs. Send our team a message, or book a time below.",
+        msgLabel: 'Tell us about your team',
+        msgHint: 'How many people, which AI tools you use, and the work that takes longer than it should.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. Let's find your best use case.", copy: "We'll reply as soon as possible. While you wait, try our free AI use-case finder to see where AI could free up time in your team's work.", primary: { label: 'Find your best AI use case', href: 'https://welearnls.com/wp-content/uploads/2025/12/welearn-ai-use-case-finder-v2.html' } },
+        variants: {
+          'one-to-one': {
+            eyebrow: 'One-to-one AI coaching', title: 'AI coaching shaped around your role',
+            copy: "Six weeks of one-to-one coaching for senior leaders, partners, and anyone whose schedule won't fit a cohort. When leaders use AI visibly, adoption spreads.",
+            msgHint: 'Who would take part, and what does their week look like?'
+          }
+        }
+      },
+      'measurement': {
+        label: 'Learning Measurement', mode: 'msg', sched: 'frame',
+        eyebrow: 'Learning Measurement', title: 'Show what learning is worth',
+        copy: "Completions and satisfaction scores show what L&D did, not what the business got back. Tell us what you report today, and we'll show you how the FRAME™ method turns it into numbers leadership trusts.",
+        msgLabel: 'What do you report on today?',
+        msgHint: 'For example: Completions and satisfaction to our CHRO each quarter. Finance is asking for ROI.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible. Want to see the method first? Here's how FRAME™ works.", primary: { label: 'See how FRAME™ works', href: 'https://welearnls.com/frame/' } }
+      },
+      'frame': {
+        label: 'FRAME™ / FOAP call', mode: 'book', sched: 'frame',
+        eyebrow: 'FRAME™ method', title: 'What would your FOAP say?',
+        copy: "Book a short call. We'll show you how a Fiscal on a Page answers one question: for every $1 you invest in learning, what does the business get back?",
+        msgLabel: 'What would you like your FOAP to show?',
+        msgHint: 'For example: The return on our sales onboarding program.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible to find a time that works." },
+        booked: { h: "You're booked{name}.", copy: "Check your inbox for the calendar invite. To get the most from the call, bring one program you'd like to put a dollar value on." }
+      },
+      'recommendation': {
+        label: 'Help choosing where to start', mode: 'book', sched: 'general',
+        eyebrow: 'Get started', title: 'Not sure where to start?',
+        copy: "Book a short call. Tell us where your L&D function is today and what you want to change, and we'll suggest the right starting point, whether that's an assessment, AI coaching, or measurement.",
+        msgLabel: 'Where is your L&D function today?',
+        msgHint: 'For example: We have no documented strategy, and leadership wants to see AI results this year.',
+        submit: 'Send message',
+        ty: { h: "Thanks{name}. We'll be in touch soon.", copy: "We'll reply as soon as possible with a suggested starting point, or a time to talk it through." },
+        booked: { h: "You're booked{name}.", copy: 'Check your inbox for the calendar invite. If you have ten minutes before we talk, the free Learning Strategy Scorecard gives us both a useful starting point.', primary: { label: 'Take the free scorecard', href: 'https://welearnls.com/learning-strategy-scorecard/' } }
+      }
+    },
+    // Dropdown option only (no modal of its own)
+    extraOptions: [['other', 'Something else']],
+    // Prototype only: stand-in "booked" state. On the site, topics without their own "booked" copy keep HubSpot's confirmation.
+    booked: { h: "You're booked{name}.", copy: 'Check your inbox for the calendar invite.' }
+  };
+  /* =================== END CONFIG =================== */
+
+  var d = document.getElementById('wl-talk');
+  if (!d || typeof d.showModal !== 'function') return; // old browser: buttons keep their normal link
+  var H = WL_TALK.hubspot, T = WL_TALK.topics;
+  var $ = function (s, c) { return (c || d).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || d).querySelectorAll(s)); };
+  var panels = { msg: $('#wl-talk-panel-msg'), book: $('#wl-talk-panel-book') };
+  var state = { topic: 'general', variant: '', label: '', cfg: null, opener: null, sent: false, firstName: '' };
+  var hsForm = null, hsRequested = false, hsTimer = null, meetUrl = '';
+
+  /* ---------- Analytics: dataLayer (GTM) + a 'wl:track' DOM event. Events are prefixed wl_talk_. ---------- */
+  function track(name, data) {
+    var p = { event: 'wl_talk_' + name, topic: state.topic, variant: state.variant || null, cta_label: state.label };
+    for (var k in (data || {})) p[k] = data[k];
+    window.dataLayer = window.dataLayer || []; window.dataLayer.push(p);
+    document.dispatchEvent(new CustomEvent('wl:track', { detail: p }));
+  }
+
+  /* ---------- Copy for a topic, with the button's variant lines swapped in ---------- */
+  function cfgFor(topic, variant) {
+    var base = T[topic] || T.general, o = (base.variants && base.variants[variant]) || {}, r = {}, k;
+    for (k in base) r[k] = base[k];
+    for (k in o) if (k !== 'ty') r[k] = o[k];
+    r.ty = {}; for (k in base.ty) r.ty[k] = base.ty[k];
+    if (o.ty) for (k in o.ty) r.ty[k] = o.ty[k];
+    return r;
+  }
+  function withName(s) { return s.replace('{name}', state.firstName ? ', ' + state.firstName : ''); }
+  function setState(panel, s) { $$('[data-state]', panel).forEach(function (n) { n.hidden = n.getAttribute('data-state') !== s; }); }
+  function fillDone(panel, block) {
+    $('[data-done-h]', panel).textContent = withName(block.h);
+    $('[data-done-copy]', panel).textContent = block.copy;
+    var acts = $('[data-done-actions]', panel); acts.innerHTML = '';
+    var p = block.primary, el;
+    if (p && p.goto) { el = document.createElement('button'); el.type = 'button'; el.setAttribute('data-goto', p.goto); }
+    else if (p && p.href) { el = document.createElement('a'); el.href = p.href; if (/^https?:/.test(p.href) && p.href.indexOf(location.host) < 0) { el.target = '_blank'; el.rel = 'noopener'; } }
+    if (el) { el.className = 'wl-talk__btn'; el.textContent = p.label; el.setAttribute('data-track-done', p.label); acts.appendChild(el); }
+    var back = document.createElement('button'); back.type = 'button'; back.className = 'wl-talk__btn wl-talk__btn--secondary'; back.setAttribute('data-close', ''); back.textContent = WL_TALK.text.back;
+    acts.appendChild(back);
+    setState(panel, 'done');
+    $('[data-done-h]', panel).focus();
+  }
+
+  /* ---------- HubSpot form (developer embed), loaded on first open ---------- */
+  function loadForm() {
+    if (hsRequested) return; hsRequested = true;
+    var s = document.createElement('script'); s.src = H.script; s.defer = true;
+    s.onerror = formError;
+    hsTimer = setTimeout(function () { if (!hsForm && !$('.hs-form-html form, .hs-form-html .hsfc-Form')) formError(); }, 15000);
+    document.head.appendChild(s);
+  }
+  function formError() { var l = $('[data-loading-form]'); l.hidden = false; l.textContent = WL_TALK.text.error; }
+  function fieldName(n) { return '0-1/' + n; } // 0-1 = contact properties
+  /* Puts the current topic, CTA label and prompts into the HubSpot form. Called on form ready and on every open. */
+  function applyToForm() {
+    var c = state.cfg, root = $('.hs-form-html'); if (!c || !root) return;
+    if (hsForm && hsForm.setFieldValue) {
+      try { hsForm.setFieldValue(fieldName(H.topicField), state.topic); } catch (e) {}
+      try { hsForm.setFieldValue(fieldName(H.labelField), state.label); } catch (e) {}
+    } else {
+      // Fallback: write the inputs directly
+      [[H.topicField, state.topic], [H.labelField, state.label]].forEach(function (f) {
+        var i = root.querySelector('[name="' + fieldName(f[0]) + '"], [name="' + f[0] + '"]');
+        if (i) { i.value = f[1]; i.dispatchEvent(new Event('input', { bubbles: true })); i.dispatchEvent(new Event('change', { bubbles: true })); }
+      });
+    }
+    // Message label, example text and submit button text change by topic
+    var ta = root.querySelector('textarea[name="' + fieldName(H.messageField) + '"], textarea[name="' + H.messageField + '"]');
+    if (ta) {
+      ta.placeholder = c.msgHint;
+      var lab = ta.id && root.querySelector('label[for="' + ta.id + '"]');
+      if (lab) { var t = lab.querySelector('span') || lab; if (t.firstChild && t.firstChild.nodeType === 3) t.firstChild.nodeValue = c.msgLabel; else t.textContent = c.msgLabel; }
+    }
+    var btn = root.querySelector('button[type=submit], input[type=submit], .hsfc-Button');
+    if (btn) { if (btn.tagName === 'INPUT') btn.value = c.submit; else btn.textContent = c.submit; }
+  }
+  window.addEventListener('hs-form-event:on-ready', function (e) {
+    var api = window.HubSpotFormsV4 && HubSpotFormsV4.getFormFromEvent ? HubSpotFormsV4.getFormFromEvent(e) : null;
+    if (api && api.getFormId && api.getFormId() !== H.formId) return;
+    hsForm = api; clearTimeout(hsTimer);
+    $('[data-loading-form]').hidden = true;
+    applyToForm();
+  });
+  function onSent(firstName) {
+    if (!d.open || state.sent) return;
+    state.sent = true; if (firstName) state.firstName = firstName;
+    track('submit');
+    fillDone(panels.msg, state.cfg.ty);
+  }
+  window.addEventListener('hs-form-event:on-submission:success', function (e) {
+    var api = window.HubSpotFormsV4 && HubSpotFormsV4.getFormFromEvent ? HubSpotFormsV4.getFormFromEvent(e) : null;
+    if (api && api.getFormId && api.getFormId() !== H.formId) return;
+    if (api && api.getFormFieldValues) {
+      api.getFormFieldValues().then(function (vals) {
+        var f = (vals || []).filter(function (v) { return /firstname$/.test(v.name); })[0];
+        onSent(f && f.value ? String(f.value).trim() : '');
+      }, function () { onSent(''); });
+    } else onSent('');
+  });
+
+  /* ---------- HubSpot scheduler: one iframe, swapped to the topic's scheduler ---------- */
+  function loadMeeting() {
+    var url = WL_TALK.schedulers[state.cfg.sched] || WL_TALK.schedulers.general;
+    if (url === meetUrl) return; meetUrl = url;
+    var box = $('[data-meet]'), l = $('[data-loading-cal]'); l.hidden = false; l.textContent = WL_TALK.text.loadingCal;
+    box.innerHTML = '';
+    var f = document.createElement('iframe');
+    f.title = 'Book a time with WeLearn';
+    f.src = url + '?embed=true&parentHostname=' + encodeURIComponent(location.host) + '&parentPageUrl=' + encodeURIComponent(location.href.split('#')[0]);
+    f.onload = function () { l.hidden = true; };
+    box.appendChild(f);
+  }
+  window.addEventListener('message', function (e) {
+    if (!/^https:\/\/meetings\.hubspot\.com$/.test(e.origin) || !e.data) return;
+    var f = $('[data-meet] iframe');
+    if (f && e.data.height) f.style.height = e.data.height + 'px';
+    if (e.data.meetingBookSucceeded) {
+      track('booked', { scheduler: state.cfg.sched });
+      // Topics with their own "booked" copy replace HubSpot's confirmation. Others keep HubSpot's.
+      if (state.cfg.booked && d.open) { meetUrl = ''; fillDone(panels.book, state.cfg.booked); }
+    }
+  });
+
+  /* ---------- Tabs ---------- */
+  function selectTab(which, silent) {
+    $$('[role="tab"]').forEach(function (t) {
+      var on = t.getAttribute('data-tab') === which;
+      t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (which === 'book') loadMeeting(); else loadForm();
+    if (!silent) track('tab', { tab: which });
+  }
+  $$('[role="tab"]').forEach(function (t) {
+    t.addEventListener('click', function () { selectTab(t.getAttribute('data-tab')); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var all = $$('[role="tab"]'), i = all.indexOf(t), n = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length];
+      selectTab(n.getAttribute('data-tab')); n.focus();
+    });
+  });
+
+  /* ---------- Open and close ---------- */
+  function open(topic, variant, label, opener) {
+    if (!T[topic]) topic = 'general';
+    state.topic = topic; state.variant = variant || ''; state.label = label; state.opener = opener;
+    var c = state.cfg = cfgFor(topic, variant);
+    $('[data-f="eyebrow"]').textContent = c.eyebrow;
+    $('[data-f="title"]').textContent = c.title;
+    $('[data-f="copy"]').textContent = c.copy;
+    // The topic's first choice sits on the left
+    var tl = $('.wl-talk__tabs'); tl.insertBefore($('#wl-talk-tab-' + c.mode), tl.firstChild);
+    // After one submission, later opens show HubSpot's own fallback thank-you in place of the form
+    setState(panels.msg, 'form'); setState(panels.book, 'form');
+    if (meetUrl === '') $('[data-meet]').innerHTML = '';
+    applyToForm();
+    selectTab(c.mode, true);
+    d.showModal();
+    track('open', { first_tab: c.mode, page: location.pathname });
+  }
+  function close() {
+    if (!d.open || d.classList.contains('is-closing')) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { d.close(); return; }
+    d.classList.add('is-closing');
+    setTimeout(function () { d.classList.remove('is-closing'); d.close(); }, 280);
+  }
+  d.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
+  d.addEventListener('close', function () {
+    track('close');
+    if (state.opener && state.opener.focus) state.opener.focus({ preventScroll: true });
+  });
+  d.addEventListener('click', function (e) {
+    if (e.target === d || e.target.closest('[data-close]')) { close(); return; }
+    var g = e.target.closest('[data-goto]');
+    if (g) { var w = g.getAttribute('data-goto'); setState(panels[w], 'form'); selectTab(w); $('#wl-talk-tab-' + w).focus(); }
+    var a = e.target.closest('[data-track-done]'); if (a) track('thankyou_click', { label: a.getAttribute('data-track-done') });
+  });
+
+  /* ---------- Buttons: any link with class wl-modal-cta (on the link or its Elementor widget) and ?topic= ---------- */
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var w = e.target.closest('.wl-modal-cta'); if (!w) return;
+    var a = w.tagName === 'A' ? w : (e.target.closest('a') || w.querySelector('a')); if (!a) return;
+    var q; try { q = new URL(a.href, location.href).searchParams; } catch (err) { return; }
+    var topic = w.getAttribute('data-topic') || q.get('topic'); if (!topic) return;
+    e.preventDefault();
+    var label = (a.textContent || '').replace(/\s+/g, ' ').trim();
+    open(topic, w.getAttribute('data-variant') || q.get('v') || '', label, a);
+  });
+})();
+</script>
