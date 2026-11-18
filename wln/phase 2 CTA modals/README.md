@@ -2,7 +2,7 @@
 
 Prepared November 18, 2026. Copy is locked. Mockup and prototype were approved on November 17.
 
-The purple CTA buttons on welearnls.com open one shared modal instead of going to the Contact us page. The modal holds a HubSpot form ("Send a message") and a HubSpot scheduler ("Book a time"). The button's link decides the header copy, the pre-selected topic, which tab opens first, which scheduler loads and the thank-you message. It reuses the dialog from the interactive benchmark report's "Let's talk" button.
+The purple CTA buttons on welearnls.com open one shared modal instead of going to the Contact us page. The modal holds a HubSpot form ("Send a message") and a HubSpot scheduler ("Book a time"). The button's link decides the header copy, the pre-selected topic, which tab opens first, which scheduler loads and the thank-you message. 
 
 ## What's in this folder
 
@@ -20,7 +20,8 @@ The purple CTA buttons on welearnls.com open one shared modal instead of going t
 - Form `1ff52ef3-d343-4293-b050-9ea9a3527a30`, a clone of the site contact form without Phone and "How did you hear about us?".
 - Fields: First name, Last name, Work email, Company, "CTA discussion topic", the default `message` field (label "What's on your mind?", optional) and a hidden "CTA label" field.
 - After submit: "Display a message" with the text "Thanks for reaching out. Someone from the WeLearn team will be in touch as soon as possible." Visitors only see this if the modal's own thank-you can't show. Do not switch it to a redirect.
-- Notifications go to Sean Stowers for now.
+- Nurture stream and follow-up messages are disabled during production
+- JG to activate workflow at time of publishing. 
 
 **Contact properties**
 
