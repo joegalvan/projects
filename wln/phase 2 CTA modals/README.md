@@ -155,7 +155,7 @@ Test on a staging copy or on a private draft page first. A test submission creat
 - [ ] After submit, the modal shows the topic's thank-you with the first name, not HubSpot's fallback.
 - [ ] Each of the four schedulers loads for its topics, and the iframe grows to fit without a double scrollbar.
 - [ ] Booking from the FRAME™ "Book a call" and the Pricing "Book a call" shows the custom "You're booked" message.
-- [ ] Sean receives the notification email.
+- [ ] The HubSpot contact owner receives the notification email.
 
 **Every button**
 
