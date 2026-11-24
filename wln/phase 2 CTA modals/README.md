@@ -1,6 +1,6 @@
 # WeLearn Phase 2: "Let's talk" modal, developer handoff
 
-Prepared November 18, 2026. Copy is locked. Mockup and prototype were approved on November 17.
+Prepared November 18, 2026. Updated November 24, 2026 with beta fixes (see `CHANGES-2026-11-24.md`). Copy is locked. Mockup and prototype were approved on November 17.
 
 The purple CTA buttons on welearnls.com open one shared modal instead of going to the Contact us page. The modal holds a HubSpot form ("Send a message") and a HubSpot scheduler ("Book a time"). The button's link decides the header copy, the pre-selected topic, which tab opens first, which scheduler loads and the thank-you message. 
 
@@ -122,7 +122,7 @@ Notes:
   - `cta_discussion_topic` to the topic value, so the dropdown is pre-selected (visitors can change it)
   - `cta_label` to the clicked button's text
   - the message field's label and example text, and the submit button text, to the topic's copy
-- **Thank-you.** On `hs-form-event:on-submission:success` the modal hides the form and shows the topic's own thank-you, with the visitor's first name when HubSpot provides it. A HubSpot form can only be sent once per page view. If the visitor opens the modal again after sending, they see HubSpot's fallback message in the form area, and they can still book a time.
+- **Thank-you.** On `hs-form-event:on-submission:success` the modal hides the form and shows the topic's own thank-you, with the visitor's first name when HubSpot provides it. After a submission the script puts in a fresh, empty form container so HubSpot renders a new form, so reopening the modal (or choosing Send a message again) shows a working form without a page reload. If HubSpot doesn't pick up the new container within 2.5 seconds, the script runs the embed script once more.
 - **Scheduler.** "Book a time" loads the topic's scheduler as an iframe (`<scheduler URL>?embed=true`), resized from HubSpot's height messages. When HubSpot reports a booking (`meetingBookSucceeded`), the `frame` and `recommendation` topics show their own "You're booked" message. Other topics keep HubSpot's own confirmation. HubSpot also sends its calendar invite.
 - **Accessibility.** Focus stays inside the modal. Esc, the close button and a click on the backdrop close it. Focus returns to the button that opened it. The tabs work with the arrow keys. Motion is turned off for visitors who prefer reduced motion. On phones the modal is a bottom sheet.
 - **Copy changes.** All copy and links sit in the `WL_TALK` config at the top of the script. Edit there; no other code changes are needed. To add a button blurb, add an entry under that topic's `variants` and use `&v=<name>` in the link.

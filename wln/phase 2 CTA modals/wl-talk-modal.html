@@ -6,56 +6,92 @@
   Without JavaScript, or on old browsers, the link still goes to the Contact us page.
 -->
 <style>
-.wl-talk{border:0;padding:0;border-radius:20px;width:min(720px,calc(100vw - 32px));max-height:min(880px,calc(100dvh - 48px));background:#fff;color:#000;font-family:'Plus Jakarta Sans','Segoe UI',Helvetica,Arial,sans-serif;box-shadow:0 30px 80px rgba(0,0,0,.3);overflow:hidden}
-.wl-talk::backdrop{background:rgba(0,0,0,.55)}
-html:has(.wl-talk[open]){overflow:hidden}
-.wl-talk[open]{display:flex;flex-direction:column;animation:wl-talk-in .45s cubic-bezier(.2,.7,.2,1)}
-.wl-talk[open]::backdrop{animation:wl-talk-fade .45s cubic-bezier(.2,.7,.2,1)}
-.wl-talk.is-closing{animation:wl-talk-out .3s cubic-bezier(.65,0,.35,1) forwards}
-.wl-talk.is-closing::backdrop{animation:wl-talk-fade .3s reverse forwards}
+/* Every rule is scoped to #wl-talk so the site theme (Hello Elementor reset, Elementor kit styles) can't
+   override it. Hello's reset gives every button a #c36 red border and text, and a red fill with white text on
+   :hover and :focus; that is what turned the tabs white-on-white and showed the off-brand red. The contested
+   button properties carry !important as a second guard. */
+#wl-talk{--wl-font:'Plus Jakarta Sans','Segoe UI',Helvetica,Arial,sans-serif;--wl-purple:#8754EF;--wl-purple-deep:#7A41ED;--wl-orange:#EF5617;--wl-red:#EF4156;--wl-maroon:#661D29;--wl-charcoal:#3A3F3E;--wl-line:#B2B7B6;--wl-gray-lightest:#F1F1EE;--wl-beige-light:#F9F8F2;
+  border:0;padding:0;margin:auto;border-radius:20px;width:min(720px,calc(100vw - 32px));max-width:none;max-height:min(880px,calc(100dvh - 48px));background:#fff;color:#000;font-family:var(--wl-font);font-size:16px;line-height:1.6;text-align:left;box-shadow:0 30px 80px rgba(0,0,0,.3);overflow:hidden}
+#wl-talk::backdrop{background:rgba(0,0,0,.55)}
+html:has(#wl-talk[open]){overflow:hidden}
+#wl-talk[open]{display:flex;flex-direction:column;animation:wl-talk-in .45s cubic-bezier(.2,.7,.2,1)}
+#wl-talk[open]::backdrop{animation:wl-talk-fade .45s cubic-bezier(.2,.7,.2,1)}
+#wl-talk.is-closing{animation:wl-talk-out .3s cubic-bezier(.65,0,.35,1) forwards}
+#wl-talk.is-closing::backdrop{animation:wl-talk-fade .3s reverse forwards}
 @keyframes wl-talk-in{from{opacity:0;transform:translateY(16px)}}
 @keyframes wl-talk-out{to{opacity:0;transform:translateY(12px)}}
 @keyframes wl-talk-fade{from{opacity:0}}
-.wl-talk *{box-sizing:border-box}
-.wl-talk [hidden]{display:none!important}
-.wl-talk__head{padding:28px 28px 18px 32px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid #F1F1EE}
-.wl-talk__eyebrow{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#EF5617}
-.wl-talk__head h2{margin:0;font-size:34px;line-height:1.18;font-weight:600;letter-spacing:-.015em;color:#000}
-.wl-talk__copy{margin:10px 0 0;font-size:15px;line-height:1.55;color:#3A3F3E;max-width:520px}
-.wl-talk__close{width:44px;height:44px;flex-shrink:0;border-radius:999px;border:1px solid #CDD0CF;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;padding:0}
-.wl-talk__close svg{width:20px;height:20px}
-.wl-talk__body{padding:24px 32px 32px;overflow-y:auto;overscroll-behavior:contain;font-size:16px;line-height:1.6}
-.wl-talk__tabs{display:flex;gap:6px;padding:4px;border-radius:999px;background:#F1F1EE;margin:0 0 20px}
-.wl-talk__tabs button{flex:1;min-height:44px;border:0;border-radius:999px;background:transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:#000}
-.wl-talk__tabs button[aria-selected="true"]{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.wl-talk__loading{padding:32px 0;color:#3A3F3E;font-size:14px}
-.wl-talk__meet iframe{display:block;width:100%;min-height:640px;border:0}
-.wl-talk__foot{margin:16px 0 0;font-size:14px;color:#3A3F3E}
-.wl-talk__foot button{background:none;border:0;padding:0;font:inherit;color:#7A41ED;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.wl-talk__done h3{margin:0;font-size:26px;line-height:1.2;font-weight:600;color:#000}
-.wl-talk__done p{margin:10px 0 0;color:#3A3F3E}
-.wl-talk__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
-.wl-talk .wl-talk__btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;border:1.5px solid #8754EF;background:#8754EF;color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer}
-.wl-talk .wl-talk__btn:hover{background:#7A41ED;border-color:#7A41ED;color:#fff}
-.wl-talk .wl-talk__btn--secondary{background:transparent;color:#7A41ED}
-.wl-talk .wl-talk__btn--secondary:hover{background:#8754EF;color:#fff}
-.wl-talk :focus-visible{outline:2px solid #7A41ED;outline-offset:3px}
-/* HubSpot developer embed: fields render as page HTML, so the site styles them */
-.wl-talk .hs-form-html form,.wl-talk .hsfc-Form{display:flex;flex-direction:column;gap:14px}
-.wl-talk .hs-form-html label,.wl-talk .hsfc-FieldLabel{font-size:14px;font-weight:500;color:#000}
-.wl-talk .hs-form-html input[type=text],.wl-talk .hs-form-html input[type=email],.wl-talk .hs-form-html select,.wl-talk .hsfc-TextInput,.wl-talk .hsfc-DropdownInput input{width:100%;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid #B2B7B6;background:#F9F8F2;font:inherit;font-size:16px;color:#000}
-.wl-talk .hs-form-html textarea,.wl-talk .hsfc-TextareaInput{width:100%;min-height:120px;padding:14px 18px;border-radius:16px;border:1px solid #B2B7B6;background:#F9F8F2;font:inherit;font-size:16px;color:#000}
-.wl-talk .hs-form-html input:focus,.wl-talk .hs-form-html textarea:focus,.wl-talk .hs-form-html select:focus{outline:2px solid #7A41ED;outline-offset:2px}
-.wl-talk .hs-form-html button[type=submit],.wl-talk .hs-form-html input[type=submit],.wl-talk .hsfc-Button{min-height:52px;padding:0 28px;border-radius:999px;border:0;background:#8754EF;color:#fff;font:inherit;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-.wl-talk .hs-form-html button[type=submit]:hover,.wl-talk .hsfc-Button:hover{background:#7A41ED}
+#wl-talk *,#wl-talk *::before,#wl-talk *::after{box-sizing:border-box}
+#wl-talk [hidden]{display:none!important}
+/* Neutral base for every button in the modal; each kind sets its own look below */
+#wl-talk button{font-family:var(--wl-font)!important;text-shadow:none;box-shadow:none;white-space:normal;user-select:none;transition:background-color .2s,color .2s,border-color .2s,box-shadow .2s}
+#wl-talk .wl-talk__head{padding:28px 28px 18px 32px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--wl-gray-lightest)}
+#wl-talk .wl-talk__eyebrow{margin:0 0 8px;font-family:var(--wl-font);font-size:12px;line-height:1.4;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--wl-orange)}
+#wl-talk .wl-talk__head h2{margin:0;padding:0;font-family:var(--wl-font);font-size:34px;line-height:1.18;font-weight:600;letter-spacing:-.015em;text-transform:none;color:#000}
+#wl-talk .wl-talk__copy{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--wl-charcoal);max-width:520px}
+#wl-talk .wl-talk__close,#wl-talk .wl-talk__close:hover,#wl-talk .wl-talk__close:focus,#wl-talk .wl-talk__close:active{width:44px;height:44px;min-height:0;flex-shrink:0;border-radius:999px;border:1px solid #CDD0CF!important;background:#fff!important;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000!important;padding:0;margin:0}
+#wl-talk .wl-talk__close:hover{border-color:#000!important}
+#wl-talk .wl-talk__close svg{width:20px;height:20px;stroke:currentColor}
+#wl-talk .wl-talk__body{padding:24px 32px 32px;overflow-y:auto;overscroll-behavior:contain;font-size:16px;line-height:1.6}
+/* Tabs: black text in every state; the selected tab is a white pill */
+#wl-talk .wl-talk__tabs{display:flex;gap:6px;padding:4px;margin:0 0 20px;border-radius:999px;background:var(--wl-gray-lightest)}
+#wl-talk .wl-talk__tabs button[role=tab],#wl-talk .wl-talk__tabs button[role=tab]:hover,#wl-talk .wl-talk__tabs button[role=tab]:focus,#wl-talk .wl-talk__tabs button[role=tab]:active{flex:1;min-height:44px;margin:0;padding:0 16px;border:0!important;border-radius:999px;background:transparent!important;font-size:14px!important;font-weight:600!important;line-height:1.2;letter-spacing:0;text-transform:none!important;text-decoration:none;cursor:pointer;color:#000!important}
+#wl-talk .wl-talk__tabs button[role=tab]:hover{background:rgba(255,255,255,.6)!important}
+#wl-talk .wl-talk__tabs button[role=tab][aria-selected=true],#wl-talk .wl-talk__tabs button[role=tab][aria-selected=true]:hover,#wl-talk .wl-talk__tabs button[role=tab][aria-selected=true]:focus{background:#fff!important;color:#000!important;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+#wl-talk .wl-talk__loading{margin:0;padding:32px 0;color:var(--wl-charcoal);font-size:14px}
+#wl-talk .wl-talk__meet iframe{display:block;width:100%;min-height:640px;border:0}
+#wl-talk .wl-talk__foot{margin:16px 0 0;font-size:14px;color:var(--wl-charcoal)}
+#wl-talk .wl-talk__foot button,#wl-talk .wl-talk__foot button:hover,#wl-talk .wl-talk__foot button:focus,#wl-talk .wl-talk__foot button:active{display:inline;min-height:0;margin:0;padding:0;border:0!important;border-radius:0;background:none!important;font-size:inherit!important;font-weight:600!important;line-height:inherit;letter-spacing:0;text-transform:none!important;color:var(--wl-purple-deep)!important;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer}
+#wl-talk .wl-talk__foot button:hover{text-decoration-thickness:2px}
+#wl-talk .wl-talk__done h3{margin:0;padding:0;font-family:var(--wl-font);font-size:26px;line-height:1.2;font-weight:600;letter-spacing:0;text-transform:none;color:#000}
+#wl-talk .wl-talk__done p{margin:10px 0 0;color:var(--wl-charcoal)}
+#wl-talk .wl-talk__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+/* Brand buttons (thank-you actions) */
+#wl-talk .wl-talk__btn,#wl-talk .wl-talk__btn:focus,#wl-talk .wl-talk__btn:active,#wl-talk .wl-talk__btn:visited{display:inline-flex;align-items:center;justify-content:center;min-height:52px;margin:0;padding:0 28px;border-radius:999px;border:1.5px solid var(--wl-purple)!important;background:var(--wl-purple)!important;color:#fff!important;font-family:var(--wl-font)!important;font-size:12px!important;font-weight:800!important;line-height:1!important;letter-spacing:.06em!important;text-transform:uppercase!important;text-decoration:none!important;white-space:nowrap;cursor:pointer}
+#wl-talk .wl-talk__btn:hover{background:var(--wl-purple-deep)!important;border-color:var(--wl-purple-deep)!important;color:#fff!important}
+#wl-talk .wl-talk__btn--secondary,#wl-talk .wl-talk__btn--secondary:focus,#wl-talk .wl-talk__btn--secondary:active{background:transparent!important;color:var(--wl-purple-deep)!important}
+#wl-talk .wl-talk__btn--secondary:hover{background:var(--wl-purple)!important;border-color:var(--wl-purple)!important;color:#fff!important}
+#wl-talk :focus{outline:none}
+#wl-talk :focus-visible{outline:2px solid var(--wl-purple-deep)!important;outline-offset:3px}
+
+/* HubSpot developer embed. Fields render as page HTML, so the theme reaches them. HubSpot's own variables are
+   set first, then the elements themselves are styled directly. */
+#wl-talk .hs-form-html{
+  --hsf-global__font-family:var(--wl-font);--hsf-global__font-size:16px;--hsf-global__color:#000;--hsf-global-error__color:var(--wl-maroon);
+  --hsf-background__background-color:transparent;--hsf-background__padding:0;--hsf-background__border-width:0;
+  --hsf-row__vertical-spacing:14px;--hsf-row__horizontal-spacing:16px;
+  --hsf-field-label__font-family:var(--wl-font);--hsf-field-label__font-size:14px;--hsf-field-label__color:#000;--hsf-field-label-requiredindicator__color:var(--wl-maroon);
+  --hsf-field-description__color:var(--wl-charcoal);--hsf-field-footer__color:var(--wl-charcoal);
+  --hsf-field-input__font-family:var(--wl-font);--hsf-field-input__color:#000;--hsf-field-input__background-color:var(--wl-beige-light);--hsf-field-input__placeholder-color:#798180;--hsf-field-input__border-color:var(--wl-line);--hsf-field-input__border-width:1px;--hsf-field-input__border-radius:999px;
+  --hsf-field-textarea__font-family:var(--wl-font);--hsf-field-textarea__color:#000;--hsf-field-textarea__background-color:var(--wl-beige-light);--hsf-field-textarea__border-color:var(--wl-line);--hsf-field-textarea__border-radius:16px;
+  --hsf-erroralert__font-family:var(--wl-font);--hsf-erroralert__color:var(--wl-maroon);--hsf-infoalert__color:var(--wl-charcoal);
+  --hsf-button__font-family:var(--wl-font);--hsf-button__font-size:12px;--hsf-button__font-weight:800;--hsf-button__color:#fff;--hsf-button__background-color:var(--wl-purple);--hsf-button__border-radius:999px;--hsf-button__border-width:0;--hsf-button__padding:0 28px;--hsf-button__box-shadow:none;
+  --hsf-button--hover__color:#fff;--hsf-button--hover__background-color:var(--wl-purple-deep);--hsf-button--focus__color:#fff;--hsf-button--focus__background-color:var(--wl-purple-deep);--hsf-button--active__color:#fff;--hsf-button--active__background-color:var(--wl-purple-deep);
+  font-family:var(--wl-font);color:#000}
+#wl-talk .hs-form-html form,#wl-talk .hsfc-Form{display:flex;flex-direction:column;gap:14px;margin:0}
+#wl-talk .hs-form-html label,#wl-talk .hsfc-FieldLabel{display:block;margin:0 0 6px;font-family:var(--wl-font);font-size:14px;line-height:1.4;font-weight:500;color:#000;text-transform:none;letter-spacing:0}
+#wl-talk .hs-form-html input[type=text],#wl-talk .hs-form-html input[type=email],#wl-talk .hs-form-html input[type=tel],#wl-talk .hs-form-html input[type=number],#wl-talk .hs-form-html select,#wl-talk .hsfc-TextInput,#wl-talk .hsfc-DropdownInput input{width:100%;min-height:48px;margin:0;padding:0 18px;border-radius:999px;border:1px solid var(--wl-line);background:var(--wl-beige-light);box-shadow:none;font-family:var(--wl-font);font-size:16px;line-height:1.4;color:#000}
+#wl-talk .hs-form-html textarea,#wl-talk .hsfc-TextareaInput{width:100%;min-height:120px;margin:0;padding:14px 18px;border-radius:16px;border:1px solid var(--wl-line);background:var(--wl-beige-light);box-shadow:none;font-family:var(--wl-font);font-size:16px;line-height:1.5;color:#000}
+#wl-talk .hs-form-html input:focus,#wl-talk .hs-form-html textarea:focus,#wl-talk .hs-form-html select:focus{border-color:var(--wl-purple-deep);outline:2px solid var(--wl-purple-deep)!important;outline-offset:2px}
+/* Validation: brand red marks the field, maroon carries the text (brand red is under 4.5:1 on white, so it is never used for text) */
+#wl-talk .hs-form-html [aria-invalid=true],#wl-talk .hsfc-TextInput[aria-invalid=true],#wl-talk .hsfc-TextareaInput[aria-invalid=true]{border-color:var(--wl-red)!important}
+#wl-talk .hs-form-html .hsfc-ErrorAlert,#wl-talk .hs-form-html .hs-error-msg,#wl-talk .hs-form-html .hs-error-msgs,#wl-talk .hs-form-html [role=alert]{font-family:var(--wl-font);font-size:13px;line-height:1.4;color:var(--wl-maroon)!important}
+#wl-talk .hs-form-html .hsfc-FieldLabel__RequiredIndicator,#wl-talk .hs-form-html .hs-form-required{color:var(--wl-maroon)!important}
+/* Submit button: brand primary button. !important beats the theme's button rules and HubSpot's injected styles. */
+#wl-talk .hs-form-html button[type=submit],#wl-talk .hs-form-html input[type=submit],#wl-talk .hs-form-html .hsfc-Button,
+#wl-talk .hs-form-html button[type=submit]:focus,#wl-talk .hs-form-html input[type=submit]:focus,#wl-talk .hs-form-html .hsfc-Button:focus,
+#wl-talk .hs-form-html button[type=submit]:active,#wl-talk .hs-form-html input[type=submit]:active,#wl-talk .hs-form-html .hsfc-Button:active{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;width:auto;min-height:52px;margin:4px 0 0;padding:0 28px!important;border:0!important;border-radius:999px!important;background:var(--wl-purple)!important;box-shadow:none!important;color:#fff!important;font-family:var(--wl-font)!important;font-size:12px!important;font-weight:800!important;font-style:normal!important;line-height:1!important;letter-spacing:.06em!important;text-transform:uppercase!important;text-decoration:none!important;white-space:normal;cursor:pointer}
+#wl-talk .hs-form-html button[type=submit]:hover,#wl-talk .hs-form-html input[type=submit]:hover,#wl-talk .hs-form-html .hsfc-Button:hover,
+#wl-talk .hs-form-html button[type=submit]:focus-visible,#wl-talk .hs-form-html .hsfc-Button:focus-visible{background:var(--wl-purple-deep)!important;color:#fff!important}
+#wl-talk .hs-form-html button[type=submit]:disabled,#wl-talk .hs-form-html .hsfc-Button:disabled{opacity:.6;cursor:default}
 @media (max-width:600px){
-  .wl-talk{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:20px 20px 0 0;max-height:92dvh}
-  .wl-talk__head{padding:20px 12px 14px 20px}
-  .wl-talk__head h2{font-size:24px}
-  .wl-talk__body{padding:16px 20px calc(28px + env(safe-area-inset-bottom,0px))}
-  .wl-talk .wl-talk__btn,.wl-talk .hsfc-Button{width:100%}
+  #wl-talk{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:20px 20px 0 0;max-height:92dvh}
+  #wl-talk .wl-talk__head{padding:20px 12px 14px 20px}
+  #wl-talk .wl-talk__head h2{font-size:24px}
+  #wl-talk .wl-talk__body{padding:16px 20px calc(28px + env(safe-area-inset-bottom,0px))}
+  #wl-talk .wl-talk__btn,#wl-talk .hs-form-html button[type=submit],#wl-talk .hs-form-html .hsfc-Button{width:100%;align-self:stretch}
 }
-@media (prefers-reduced-motion:reduce){.wl-talk[open],.wl-talk.is-closing,.wl-talk[open]::backdrop{animation:none}}
+@media (prefers-reduced-motion:reduce){#wl-talk[open],#wl-talk.is-closing,#wl-talk[open]::backdrop{animation:none}#wl-talk button{transition:none}}
 </style>
 
 <dialog class="wl-talk" id="wl-talk" aria-labelledby="wl-talk-title" aria-describedby="wl-talk-copy">
@@ -262,7 +298,7 @@ html:has(.wl-talk[open]){overflow:hidden}
   var $$ = function (s, c) { return Array.prototype.slice.call((c || d).querySelectorAll(s)); };
   var panels = { msg: $('#wl-talk-panel-msg'), book: $('#wl-talk-panel-book') };
   var state = { topic: 'general', variant: '', label: '', cfg: null, opener: null, sent: false, firstName: '' };
-  var hsForm = null, hsRequested = false, hsTimer = null, meetUrl = '';
+  var hsForm = null, hsRequested = false, hsTimer = null, hsRetry = null, hsResetTimer = null, meetUrl = '';
 
   /* ---------- Analytics: dataLayer (GTM) + a 'wl:track' DOM event. Events are prefixed wl_talk_. ---------- */
   function track(name, data) {
@@ -298,14 +334,39 @@ html:has(.wl-talk[open]){overflow:hidden}
   }
 
   /* ---------- HubSpot form (developer embed), loaded on first open ---------- */
-  function loadForm() {
-    if (hsRequested) return; hsRequested = true;
-    var s = document.createElement('script'); s.src = H.script; s.defer = true;
+  function hasForm() { return !!$('.hs-form-html form, .hs-form-html .hsfc-Form'); }
+  function addScript(fresh) {
+    var s = document.createElement('script'); s.defer = true; s.setAttribute('data-wl-talk-hs', '');
+    // fresh: a unique URL so the browser runs the embed script again and it renders the new, empty container
+    s.src = H.script + (fresh ? (H.script.indexOf('?') < 0 ? '?' : '&') + 'wl=' + Date.now() : '');
     s.onerror = formError;
-    hsTimer = setTimeout(function () { if (!hsForm && !$('.hs-form-html form, .hs-form-html .hsfc-Form')) formError(); }, 15000);
     document.head.appendChild(s);
   }
+  function watchForError() {
+    clearTimeout(hsTimer);
+    hsTimer = setTimeout(function () { if (!hsForm && !hasForm()) formError(); }, 15000);
+  }
+  function loadForm() {
+    if (hsRequested) return; hsRequested = true;
+    watchForError(); addScript(false);
+  }
   function formError() { var l = $('[data-loading-form]'); l.hidden = false; l.textContent = WL_TALK.text.error; }
+  /* After a submission HubSpot swaps its form for its own "Display a message" text, and it never renders the
+     same container twice. So once the visitor has seen the thank-you, put in a new, empty container and let
+     HubSpot render a new form there. Most embed versions pick up new containers by themselves; if no form
+     appears within 2.5 s, run the embed script again. */
+  function resetForm() {
+    clearTimeout(hsRetry); clearTimeout(hsResetTimer);
+    var old = $('.hs-form-html'), n = document.createElement('div');
+    n.className = 'hs-form-html';
+    ['data-region', 'data-form-id', 'data-portal-id'].forEach(function (a) { n.setAttribute(a, old.getAttribute(a)); });
+    old.parentNode.replaceChild(n, old);
+    hsForm = null; state.sent = false;
+    var l = $('[data-loading-form]'); l.hidden = false; l.textContent = WL_TALK.text.loadingForm;
+    if (!hsRequested) return; // the first open loads the script
+    watchForError();
+    hsRetry = setTimeout(function () { if (!hsForm && !hasForm()) addScript(true); }, 2500);
+  }
   function fieldName(n) { return '0-1/' + n; } // 0-1 = contact properties
   /* Puts the current topic, CTA label and prompts into the HubSpot form. Called on form ready and on every open. */
   function applyToForm() {
@@ -333,15 +394,19 @@ html:has(.wl-talk[open]){overflow:hidden}
   window.addEventListener('hs-form-event:on-ready', function (e) {
     var api = window.HubSpotFormsV4 && HubSpotFormsV4.getFormFromEvent ? HubSpotFormsV4.getFormFromEvent(e) : null;
     if (api && api.getFormId && api.getFormId() !== H.formId) return;
-    hsForm = api; clearTimeout(hsTimer);
+    hsForm = api; clearTimeout(hsTimer); clearTimeout(hsRetry);
     $('[data-loading-form]').hidden = true;
     applyToForm();
   });
   function onSent(firstName) {
-    if (!d.open || state.sent) return;
+    if (state.sent) return; // the same submission reported twice
     state.sent = true; if (firstName) state.firstName = firstName;
     track('submit');
-    fillDone(panels.msg, state.cfg.ty);
+    if (d.open) fillDone(panels.msg, state.cfg.ty);
+    // Rebuild the form behind the thank-you, so it is ready when the visitor reopens the modal
+    // or picks "Send a message" again. 1 s lets HubSpot finish its own post-submit work first.
+    clearTimeout(hsResetTimer);
+    hsResetTimer = setTimeout(resetForm, 1000);
   }
   window.addEventListener('hs-form-event:on-submission:success', function (e) {
     var api = window.HubSpotFormsV4 && HubSpotFormsV4.getFormFromEvent ? HubSpotFormsV4.getFormFromEvent(e) : null;
@@ -406,7 +471,8 @@ html:has(.wl-talk[open]){overflow:hidden}
     $('[data-f="copy"]').textContent = c.copy;
     // The topic's first choice sits on the left
     var tl = $('.wl-talk__tabs'); tl.insertBefore($('#wl-talk-tab-' + c.mode), tl.firstChild);
-    // After one submission, later opens show HubSpot's own fallback thank-you in place of the form
+    // A sent form is rebuilt after its thank-you (see resetForm). If the modal reopens before that, rebuild now.
+    if (state.sent) resetForm();
     setState(panels.msg, 'form'); setState(panels.book, 'form');
     if (meetUrl === '') $('[data-meet]').innerHTML = '';
     applyToForm();
